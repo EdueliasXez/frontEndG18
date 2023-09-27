@@ -1,0 +1,20 @@
+/* Estilo para el contenedor principal del componente EventData */
+.EventData {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Estilo para el título del componente EventData */
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para el contenedor de tarjetas de eventos dentro de EventData */
+  .EventData-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
