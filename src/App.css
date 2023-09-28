@@ -28,6 +28,17 @@
   color: #61dafb;
 }
 
+.btn1{
+  background-color: #1f98ef; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Relleno del botón (ajusta según tus preferencias) */
+  cursor: pointer; /* Cursor de apuntador al pasar el mouse */
+  font-size: 16px; /* Tamaño de fuente (ajusta según tus preferencias) */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-top: 10px; /* Espacio superior */
+  transition: 0.5s ease background;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
