@@ -3,6 +3,8 @@ import styles from "./App.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./Views/Landing/landing";
 import Home from "./Views/Home/home";
+import FormLogin from "./Components/FormLogin/FormLogin";
+
 
 function App() {
   return (
@@ -11,9 +13,9 @@ function App() {
       <Routes>
         <Route index element={<Landing/>} />
         <Route exact path ="/home" element ={<Home/>}/>
-        <Route path="/detail/:id" />
+        {/* <Route path="/detail/:id" element={<EventDetail/>} /> */}
         <Route path="/checkout" />
-        <Route path="/login"/>
+        <Route path="/user" element={<FormLogin/>} />
       </Routes>
       </BrowserRouter>
     </div>
