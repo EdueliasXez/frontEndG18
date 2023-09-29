@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { Provider } from 'react-redux'; 
+import store from './Redux/store/store'; 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3001';
 
-//import 'bootstrap/dist/css/bootstrap.min.css';
-
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}> {/* Envuelve tu App con Provider y pasa la tienda como prop */}
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

@@ -1,43 +1,63 @@
-import Card from '../Card/Card';
+import React, { useEffect, useState } from 'react';
+import EventCard from '../Card/Card'; // Asegúrate de tener la ruta correcta al componente EventCard
+import styles from './Cards.module.css';
+import { getEvents } from '../../Redux/actions/events_actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-import style from "./Cards.module.css"
+function Cards() {
+  const dispatch = useDispatch();
+  const events = useSelector((state) => state.events.events);
+  const loading = useSelector((state) => state.events.loading);
+  const error = useSelector((state) => state.events.error);
 
-const Cards = (props) => {
-  
-  const { products, handleNextPage, handlePrevPage, isLastPage, page } = props;
-  
+  useEffect(() => {
+    dispatch(getEvents());
+  }, [dispatch]);
+  console.log(events);
+
+  const itemsPerPage = 10; 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const eventsToShow = events.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(events.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
-      <div className={style.contGeneral}>
-    <div className={style.contenedorCards}>
-             {products.length === 0 ? (
-        <h1 className={style.noCards}>No hay productos con esas características</h1>
-      ) : (
-        products?.map(({ id, title, imageSrc, price, date, location,isActive,stock }) => {
-          if (isActive===true) {
-            return (
-              <Card
-                key={id}
-                id={id}
-                title={title}
-                date={date}
-                price={price}
-                location={location}
-                imageSrc={imageSrc}
-                stock={stock}
-                
-              />
-            );
-          }
-          return false;
-        })
-      )}
-    </div>
-    <div className={style.contPag}>
-      <button className={style.button1} onClick={handlePrevPage} disabled={page === 1}>Anterior</button>
-      <button className={style.button2} onClick={handleNextPage} disabled={isLastPage||products.length===0}>Siguiente</button>
-    </div>
+    <div className={styles.contGeneral}>
+      <div className={styles.contenedorCards}>
+        {loading ? (
+          <div>Cargando eventos...</div>
+        ) : error ? (
+          <div>Error: {error}</div>
+        ) : eventsToShow.map((event, index) => (
+          <EventCard key={index} event={event} />
+        ))}
       </div>
+      <div className={styles.contPag}>
+        <button className={styles.button1} onClick={handlePrevPage} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <button className={styles.button2} onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Siguiente
+        </button>
+      </div>
+    </div>
   );
-};
+}
 
 export default Cards;

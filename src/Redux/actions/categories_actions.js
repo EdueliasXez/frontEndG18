@@ -1,22 +1,29 @@
 import axios from 'axios';
-import * as categoryActionTypes from './categoryActionTypes';
+import * as actionTypes from '../types/types';
 
 export const getCategoriesRequest = () => ({
-  type: categoryActionTypes.GET_CATEGORIES_REQUEST,
+  type: actionTypes.GET_CATEGORIES_REQUEST,
 });
 
-export const getCategoriesSuccess = (categories) => ({
-  type: categoryActionTypes.GET_CATEGORIES_SUCCESS,
-  payload: categories,
-});
+export const getCategoriesSuccess = (categories) => {
+  console.log("Action getCategoriesSuccess is being called"); // Agrega este console.log
+  return {
+    type: actionTypes.GET_CATEGORIES_SUCCESS,
+    payload: categories,
+  };
+};
 
-export const getCategoriesFailure = (error) => ({
-  type: categoryActionTypes.GET_CATEGORIES_FAILURE,
-  payload: error,
-});
+export const getCategoriesFailure = (error) => {
+  console.log("Action getCategoriesFailure is being called"); // Agrega este console.log
+  return {
+    type: actionTypes.GET_CATEGORIES_FAILURE,
+    payload: error,
+  };
+};
 
 export const getCategories = () => {
   return (dispatch) => {
+    console.log("Action getCategories is being called"); 
     dispatch(getCategoriesRequest());
     axios
       .get('/categories')
@@ -30,3 +37,4 @@ export const getCategories = () => {
       });
   };
 };
+
