@@ -22,16 +22,15 @@ function Landing() {
       setSelectedItem((prevItem) =>
         prevItem === categories.length - 1 ? 0 : prevItem + 1
       );
-    }, 10000); 
+    }, 10000);
 
     return () => {
-      clearInterval(interval); 
+      clearInterval(interval);
     };
   }, []);
 
   const backgroundClass = `${style.backgroundImage} ${style.backgroundWithFilter}`;
   const backgroundImageUrl = categories[selectedItem]?.backgroundImage[0] || "";
-  
 
   return (
     <div className={style.landingContainer}>
@@ -42,7 +41,7 @@ function Landing() {
           <img src={logo} alt="Logo" className={style.logo} />
           <h1 className={style.h2}>Te damos la bienvenida</h1>
         </div>
-  
+
         <div className={style.buttonlanding}>
           <Button
             variant="contained"
@@ -54,25 +53,34 @@ function Landing() {
             Empezar
           </Button>
         </div>
+
         <div className={style.categoryCarousel}>
           <h1 className={style.h1}>Explora nuestras categorías</h1>
-          <Carousel
-  showArrows={false}
-  showStatus={false}
-  showIndicators={false}
-  centerMode={true}
-  centerSlidePercentage={33.33}
-  emulateTouch={true}
-  selectedItem={selectedItem}
-  onChange={(index) => setSelectedItem(index)}
-  className={style.customCarousel} // Agrega una clase personalizada al carrusel
->
-  {categories.map((category) => (
-    <div key={category._id} className={`${style.category} ${style.categoryItem}`}>
-      <h3 className={style.categoryText}>{category.name}</h3>
-    </div>
-  ))}
-</Carousel>
+          {categories.length === 0 ? (
+            // Mostrar contenido alternativo si categories está vacío
+            <div className={style.loadingContent}>
+              Cargando...
+            </div>
+          ) : (
+            // Renderizar el carrusel si categories no está vacío
+            <Carousel
+              showArrows={false}
+              showStatus={false}
+              showIndicators={false}
+              centerMode={true}
+              centerSlidePercentage={33.33}
+              emulateTouch={true}
+              selectedItem={selectedItem}
+              onChange={(index) => setSelectedItem(index)}
+              className={style.customCarousel} // Agrega una clase personalizada al carrusel
+            >
+              {categories.map((category) => (
+                <div key={category._id} className={`${style.category} ${style.categoryItem}`}>
+                  <h3 className={style.categoryText}>{category.name}</h3>
+                </div>
+              ))}
+            </Carousel>
+          )}
         </div>
       </div>
     </div>

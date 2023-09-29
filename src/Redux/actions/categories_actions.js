@@ -6,7 +6,6 @@ export const getCategoriesRequest = () => ({
 });
 
 export const getCategoriesSuccess = (categories) => {
-  console.log("Action getCategoriesSuccess is being called"); // Agrega este console.log
   return {
     type: actionTypes.GET_CATEGORIES_SUCCESS,
     payload: categories,
@@ -14,7 +13,6 @@ export const getCategoriesSuccess = (categories) => {
 };
 
 export const getCategoriesFailure = (error) => {
-  console.log("Action getCategoriesFailure is being called"); // Agrega este console.log
   return {
     type: actionTypes.GET_CATEGORIES_FAILURE,
     payload: error,
@@ -23,7 +21,6 @@ export const getCategoriesFailure = (error) => {
 
 export const getCategories = () => {
   return (dispatch) => {
-    console.log("Action getCategories is being called"); 
     dispatch(getCategoriesRequest());
     axios
       .get('/categories')

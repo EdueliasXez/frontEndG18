@@ -13,6 +13,7 @@ const navigate = useNavigate;
 return (
  <div className={style.container}>
     <NavBar/>
+    <Sidebar/>
     <Cards/>
  </div>
 )

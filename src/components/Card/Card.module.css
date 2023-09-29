@@ -1,8 +1,7 @@
-
 .card {
   max-width: 400px;
-  max-height: 400px;
   overflow-y: auto;
+  transition: max-height 0.3s; /* Agregamos una transición suave */
 }
 
 .cardImageContainer {
@@ -15,7 +14,15 @@
   width: 100%;
   height: auto;
 }
+
 .link {
   text-decoration: none;
   color: rgb(0, 0, 0);
 }
+
+.card.expanded {
+  max-height: none; /* Expandimos la tarjeta cuando esté abierta */
+}
+
+
+

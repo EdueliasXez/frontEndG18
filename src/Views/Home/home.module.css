@@ -17,4 +17,13 @@
     background-color: #8f3a5b;
   }
 
+  .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: auto; /* Agrega esta propiedad para habilitar las barras de desplazamiento */
+    background-color: #8f3a5b;
+  }
   

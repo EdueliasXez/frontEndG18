@@ -1,23 +1,44 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Typography, Paper } from '@mui/material';
+import Select from 'react-select';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCategories } from '../../Redux/actions/categories_actions';
+import { filterEventsByCategory } from '../../Redux/actions/events_actions';
+import styles from './SideBar.module.css'; // Importa el archivo CSS Module
 
-function Sidebar() {
-  // Obtiene las categorías del estado utilizando useSelector
+function FilterBar() {
+  const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories.categories);
+  const selectedCategory = useSelector((state) => state.events.selectedCategory);
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  const handleCategoryChange = (selectedOptions) => {
+
+    dispatch(filterEventsByCategory(selectedOptions));
+  };
+
+  const categoriesOptions = categories.map((category) => ({
+    value: category._id,
+    label: category.name,
+  }));
 
   return (
-    <div className="sidebar">
-      <h2>Categorías</h2>
-      <ul>
-        {categories.map((category) => (
-          <li key={category._id}>
-            <Link to={`/category/${category._id}`}>{category.name}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Paper elevation={3} className={styles.filterBarContainer}>
+      <Typography variant="h6" gutterBottom className={styles.filterBarTitle}>
+        Filtrar por Categoría
+      </Typography>
+      <Select
+        options={categoriesOptions}
+        isMulti={true} 
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+        placeholder="Selecciona una o más categorías" // Actualiza el placeholder
+      />
+    </Paper>
   );
 }
 
-export default Sidebar;
+export default FilterBar;
