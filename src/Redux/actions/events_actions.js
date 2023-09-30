@@ -30,3 +30,23 @@ export const getEvents = () => {
       });
   };
 };
+
+export const filterEventsByCategory = (selectedCategories) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const filteredEvents = events.events.filter((event) => {
+      return (
+        selectedCategories.length === 0 || // Si no se seleccionan categorías, no se aplica filtro
+        selectedCategories.every((selectedCategory) =>
+          event.categories.some((category) => category._id === selectedCategory.value)
+        )
+      );
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS_BY_CATEGORY,
+      payload: filteredEvents,
+    });
+  };
+};

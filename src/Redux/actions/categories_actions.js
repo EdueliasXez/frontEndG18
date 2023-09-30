@@ -1,19 +1,23 @@
 import axios from 'axios';
-import * as categoryActionTypes from './categoryActionTypes';
+import * as actionTypes from '../types/types';
 
 export const getCategoriesRequest = () => ({
-  type: categoryActionTypes.GET_CATEGORIES_REQUEST,
+  type: actionTypes.GET_CATEGORIES_REQUEST,
 });
 
-export const getCategoriesSuccess = (categories) => ({
-  type: categoryActionTypes.GET_CATEGORIES_SUCCESS,
-  payload: categories,
-});
+export const getCategoriesSuccess = (categories) => {
+  return {
+    type: actionTypes.GET_CATEGORIES_SUCCESS,
+    payload: categories,
+  };
+};
 
-export const getCategoriesFailure = (error) => ({
-  type: categoryActionTypes.GET_CATEGORIES_FAILURE,
-  payload: error,
-});
+export const getCategoriesFailure = (error) => {
+  return {
+    type: actionTypes.GET_CATEGORIES_FAILURE,
+    payload: error,
+  };
+};
 
 export const getCategories = () => {
   return (dispatch) => {
@@ -30,3 +34,4 @@ export const getCategories = () => {
       });
   };
 };
+
