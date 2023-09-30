@@ -1,7 +1,9 @@
+// En tu archivo de reducers/eventsReducer.js
 import * as actionTypes from '../types/types';
 
 const initialState = {
-  events: [],
+  events: [], // Todos los eventos
+  filteredEvents: [], // Eventos filtrados por categoría
   loading: false,
   error: null,
 };
@@ -18,6 +20,7 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: action.payload,
+        filteredEvents: action.payload, 
         loading: false,
         error: null,
       };
@@ -25,9 +28,15 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: [],
+        filteredEvents: [],
         loading: false,
         error: action.payload,
       };
+      case actionTypes.FILTER_EVENTS_BY_CATEGORY:
+  return {
+    ...state,
+    filteredEvents: action.payload, // Usar los eventos filtrados directamente desde el action
+  };
     default:
       return state;
   }
