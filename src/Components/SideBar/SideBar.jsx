@@ -16,7 +16,6 @@ function FilterBar() {
   }, [dispatch]);
 
   const handleCategoryChange = (selectedOptions) => {
-
     dispatch(filterEventsByCategory(selectedOptions));
   };
 
@@ -35,7 +34,7 @@ function FilterBar() {
         isMulti={true} 
         value={selectedCategory}
         onChange={handleCategoryChange}
-        placeholder="Selecciona una o más categorías" // Actualiza el placeholder
+        placeholder="Selecciona una o más categorías"
       />
     </Paper>
   );

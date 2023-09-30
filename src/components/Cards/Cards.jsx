@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import EventCard from '../Card/Card'; // Asegúrate de tener la ruta correcta al componente EventCard
+import EventCard from '../Card/Card'; 
 import styles from './Cards.module.css';
 import { getEvents, filterEventsByCategory } from '../../Redux/actions/events_actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 function Cards() {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.events.events);
-  const filteredEvents = useSelector((state) => state.events.filteredEvents); // Estado de eventos filtrados
+  const filteredEvents = useSelector((state) => state.events.filteredEvents);
   const loading = useSelector((state) => state.events.loading);
   const error = useSelector((state) => state.events.error);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,9 +20,9 @@ function Cards() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const eventsToShow = loading ? [] : error ? [] : filteredEvents.slice(startIndex, endIndex); // Usar eventos filtrados
+  const eventsToShow = loading ? [] : error ? [] : filteredEvents.slice(startIndex, endIndex); 
 
-  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage); // Usar eventos filtrados
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage); 
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
