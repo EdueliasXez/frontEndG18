@@ -12,9 +12,9 @@ function App() {
       <Routes>
         <Route index element={<Landing/>} />
         <Route exact path ="/home" element ={<Home/>}/>
-        <Route path="/detail/:id" element={<EventDetail />} />
+        <Route path="/detail/:id" />
         <Route path="/checkout" />
-        <Route path="/login"/>
+        <Route path="/login" element={<FormLogin/>} />
       </Routes>
       </BrowserRouter>
     </div>
