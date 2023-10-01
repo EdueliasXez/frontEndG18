@@ -35,7 +35,6 @@ const CustomCard = ({ event }) => {
         <Typography variant="body2" color="text.secondary">
           ${event.price}
         </Typography>
-        {/* Accede al nombre de la categoría correctamente */}
         <Typography variant="body2" color="text.secondary">
           Categoría: {event.categories[0].name} 
         </Typography>
