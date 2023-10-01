@@ -8,20 +8,24 @@
   }
   
     .container {
-      position: relative;
-    z-index: 1;
+      margin-bottom: 40px; 
     }
-  .card{
-    border: 2px solid  #000000;
-    border-radius: 5px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-   margin-left: 100px;
-   margin-right: 100px;
-   margin-top: 70px;
-   background-color: #000000;
-   opacity: 0.7;
-  
+
+
+.navbar {
+  margin-bottom: 40px; 
+  margin-top: 80px; 
 }
+
+.sidebar {
+  margin-top: 80px; 
+}
+
+
+.main {
+  margin-top: 40px; 
+}
+
+
+
   
