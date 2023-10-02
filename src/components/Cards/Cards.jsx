@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import EventCard from '../Card/Card'; 
+import EventCard from '../Card/Card';
 import styles from './Cards.module.css';
 import { getEvents, filterEventsByCategory } from '../../Redux/actions/events_actions';
 import { useDispatch, useSelector } from 'react-redux';
-
+//name
 function Cards() {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.events.events);
@@ -13,16 +13,18 @@ function Cards() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getEvents());
-  }, [dispatch]);
+    if (currentPage === 1) {
+      dispatch(getEvents());
+    }
+  }, [dispatch, currentPage]);
 
   const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const eventsToShow = loading ? [] : error ? [] : filteredEvents.slice(startIndex, endIndex); 
+  const eventsToShow = loading ? [] : error ? [] : filteredEvents.slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage); 
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -51,6 +53,7 @@ function Cards() {
         <button className={styles.button1} onClick={handlePrevPage} disabled={currentPage === 1}>
           Anterior
         </button>
+        <span className={styles.pageInfo}>Página {currentPage} de {totalPages}</span>
         <button className={styles.button2} onClick={handleNextPage} disabled={currentPage === totalPages}>
           Siguiente
         </button>
