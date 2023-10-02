@@ -1,10 +1,13 @@
 import './styles.css'
 
+
 const FormLogin = () => {
 
     return(
 
 		<form class="form_main" action="">
+            <div class="icon-home" >
+    <div class="home-body" /></div>
     <p class="heading">Login</p>
     <div class="inputContainer">
         <svg viewBox="0 0 16 16" fill="#2e2e2e" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="inputIcon">
@@ -19,13 +22,17 @@ const FormLogin = () => {
     </svg>
     <input placeholder="Contraseña" id="password" class="inputField" type="password"/>
 </div>
-              
+<a href="#" class="button blue">
+		<span class="icon-house"></span>Inicio
+	</a> 
            
 <button id="button">INGRESAR</button>
     <div class="signupContainer">
         <p>¿No tienes una cuenta?</p>
         <a href="/Registro">Registrate</a>
+        
     </div>
+    
 </form>
 
 	 

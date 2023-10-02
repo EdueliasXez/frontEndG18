@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./Views/Landing/landing";
 import Home from "./Views/Home/home";
 import FormLogin from "./Components/FormLogin/FormLogin";
+import Cards from "./Components/Cards/Cards";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         {/* <Route path="/detail/:id" element={<EventDetail/>} /> */}
         <Route path="/checkout" />
         <Route path="/login" element={<FormLogin/>} />
+        <Route path="/todos" element ={<Cards/>}/>
       </Routes>
       </BrowserRouter>
     </div>

@@ -38,13 +38,13 @@ const NavBar = () =>{
 <header> 
 <nav>
 <ul><ul>
-<button className={style.btn} > CATEGORIES </button></ul> 
-<Link to="/contact/"> <button className={style.btn} > CONTACT US </button>   </Link> 
+<button className={style.btn} > CATEGORIAS </button></ul> 
+<Link to="/contact/"> <button className={style.btn} > CONTACTANOS </button>   </Link> 
 
-<Link to="/checkout/"> <button className={style.btn3} > CHECKOUT </button>   </Link> 
+<Link to="/checkout/"> <button className={style.btn3} > CARRITO </button>   </Link> 
 
 <Link to="/login/"> <button className={style.btn2} > LOG IN </button>   </Link> 
-<button className={style.btn1} > SEARCH </button>
+<button className={style.btn1} >BUSCAR </button>
 <ul>
     <input className={style.navinput} 
     type="text"
