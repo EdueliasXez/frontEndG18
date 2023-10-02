@@ -17,11 +17,11 @@ return (
     <div className={style.container}>
     <NavBar/>
     <div className={style.card}>
-          
-         <Cards/>
+        <Link to={`/detail/`}  >
+         <Card/>
         
-       
-        {/* <Card/>
+        </Link>
+        <Card/>
         <Card/>
         <li>  <Card/></li>
         <li>  <Card/></li>
@@ -32,7 +32,7 @@ return (
         <li>  <Card/></li>
         <li>  <Card/></li>
         <li>  <Card/></li>
-        <li>  <Card/></li>   */}
+        <li>  <Card/></li>  
               </div>
  </div>
 </body>
