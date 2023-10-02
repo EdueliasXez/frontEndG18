@@ -8,7 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import style from './Card.module.css'; // Importa tu archivo CSS
+import style from './Card.module.css'; 
 
 const CustomCard = ({ event }) => {
   const [expanded, setExpanded] = useState(false);
@@ -36,7 +36,7 @@ const CustomCard = ({ event }) => {
           ${event.price}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Categoría: {event.categories[0].name} 
+        Categoría: {event.categories[0] ? event.categories[0].name : 'Sin categoría'}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
