@@ -1,7 +1,8 @@
-import './styles.css'
-
+import './styles.css';
+import {useAuth0} from '@auth0/auth0-react';
 const FormLogin = () => {
 
+    const { loginWithPopup } = useAuth0();
     return(
 
 		<form class="form_main" action="">
@@ -25,6 +26,7 @@ const FormLogin = () => {
     <div class="signupContainer">
         <p>¿No tienes una cuenta?</p>
         <a href="/Registro">Registrate</a>
+        <button onClick={() => loginWithPopup()}>Ingresar</button>
     </div>
 </form>
 
