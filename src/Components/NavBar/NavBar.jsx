@@ -41,8 +41,6 @@ const NavBar = () =>{
 <button className={style.btn} > CATEGORIES </button></ul> 
 <Link to="/contact/"> <button className={style.btn} > CONTACT US </button>   </Link> 
 
-<Link to="/checkout/"> <button className={style.btn3} > CHECKOUT </button>   </Link> 
-
 <Link to="/login/"> <button className={style.btn2} > LOG IN </button>   </Link> 
 <button className={style.btn1} > SEARCH </button>
 <ul>

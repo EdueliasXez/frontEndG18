@@ -50,3 +50,20 @@ export const filterEventsByCategory = (selectedCategories) => {
     });
   };
 };
+
+export const getEventDetail = (eventId) => async (dispatch) => {
+  try {
+    const response = await axios.get(`/events/${eventId}`);
+    const event = response.data;
+    dispatch({
+      type: actionTypes.GET_EVENT_DETAIL, 
+      payload: event,
+    });
+  } catch (error) {
+    console.error('Error al obtener el detalle del evento:', error);
+  }
+};
+
+export const cleanDetail = () => ({
+  type: actionTypes.CLEAN_EVENT_DETAIL, 
+});
