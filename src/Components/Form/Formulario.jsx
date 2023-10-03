@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './styles.css'
-
+import { Link } from 'react-router-dom';
 function Formulario() {
   const [formData, setFormData] = useState({
     nombre: '',
@@ -66,8 +66,8 @@ function Formulario() {
   };
 
   return (
-    
-    <form className="form" onSubmit={handleSubmit}>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
     <p className="title">Registro </p>
     <p className="message">Regístrese ahora y obtenga acceso completo a nuestra aplicación </p>
         <div className="flex">
@@ -106,9 +106,12 @@ function Formulario() {
     
     <button className="submit" type="submit">Registrarse</button>
     <p className="signin">
-¿Ya tienes una cuenta? <a href="#">Iniciar sesion</a> </p>
+¿Ya tienes una cuenta? <Link to="/login">Iniciar sesion</Link> </p>
 </form>
   
+
+    </div>
+    
     /*<div>
       <h1>Formulario</h1>
       <form onSubmit={handleSubmit}>

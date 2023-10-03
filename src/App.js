@@ -4,7 +4,7 @@ import Landing from "./Views/Landing/landing";
 import Home from "./Views/Home/home";
 import EventDetail from "./Views/Detail/EventDetail";
 import FormLogin from './Components/FormLogin/FormLogin';
-
+import Formulario from "./Components/Form/Formulario";
 function App() {
   return (
     <div className="App">
@@ -15,6 +15,7 @@ function App() {
           <Route path="/detail/:id" element={<EventDetail />} />
           <Route path="/checkout" />
           <Route path="/login" element={<FormLogin />} />
+          <Route path="/registro" element={<Formulario />} />
         </Routes>
       </BrowserRouter>
     </div>

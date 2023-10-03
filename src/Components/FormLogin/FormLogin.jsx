@@ -3,10 +3,31 @@ import LogoutButton from '../Profile/logout';
 import React from 'react';
 import './styles.css';
 import {useAuth0} from '@auth0/auth0-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, logout } from '../../Redux/actions/authActions';
+
+
+
+
+
 const FormLogin = () => {
 
     const { loginWithRedirect } = useAuth0();
-    const { isAuthenticated} = useAuth0();
+   // const { isAuthenticated} = useAuth0();
+
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const dispatch = useDispatch();
+
+    const handleLogin = () => {
+        // Realiza la lógica de inicio de sesión
+        const user = { /* datos del usuario autenticado */ };
+        dispatch(loginSuccess(user)); // Dispara la acción para autenticar al usuario
+      };
+      
+      const handleLogout = () => {
+        dispatch(logout()); // Dispara la acción para cerrar sesión
+      };
+      
 
     return(
 
@@ -27,7 +48,7 @@ const FormLogin = () => {
 </div>
               
            
-<button id="button">INGRESAR</button>
+<button id="button" onClick={handleLogin}>INGRESAR</button>
     <div className="signupContainer">
         <p>¿No tienes una cuenta?</p>
         <a href="/Registro">Registrate</a>

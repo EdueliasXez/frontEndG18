@@ -1,10 +1,10 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     max-width: 350px;
-    background-color: #fff;
-    padding: 30px;
+    background-color: #ffffff54;
+    padding: 40px;
     border-radius: 20px;
     position: relative;
   }
@@ -43,7 +43,7 @@
   }
   
   .message, .signin {
-    color: rgba(88, 87, 87, 0.822);
+    color: rgba(88, 87, 87, 0.859);
     font-size: 14px;
   }
   
@@ -52,7 +52,7 @@
   }
   
   .signin a {
-    color: royalblue;
+    color: rgb(50, 98, 244);
   }
   
   .signin a:hover {
@@ -62,7 +62,7 @@
   .flex {
     display: flex;
     width: 100%;
-    gap: 6px;
+    gap: 8px;
   }
   
   .form label {
@@ -71,7 +71,7 @@
   
   .form label .input {
     width: 100%;
-    padding: 10px 10px 20px 10px;
+    padding: 5px 10px 20px 10px;
     outline: 0;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
@@ -80,7 +80,7 @@
   .form label .input + span {
     position: absolute;
     left: 10px;
-    top: 15px;
+    top: 100px;
     color: grey;
     font-size: 0.9em;
     cursor: text;
@@ -105,10 +105,12 @@
     outline: none;
     background-color: royalblue;
     padding: 10px;
+    
     border-radius: 10px;
-    color: #fff;
+    color: #ffffff;
     font-size: 16px;
     transform: .3s ease;
+    width: 100%;
   }
   
   .submit:hover {
@@ -131,3 +133,11 @@
   .error{
     color: red;
   }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Esto hará que el contenedor ocupe el 100% de la altura de la ventana */
+  }
+  
