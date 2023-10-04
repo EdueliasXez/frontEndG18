@@ -10,7 +10,7 @@ const FormLogin = () => {
 
     return(
 
-        <form className="form_main" action="">
+		<form className="form_main" action="">
     <p className="heading">Login</p>
     <div className="inputContainer">
         <svg viewBox="0 0 16 16" fill="#2e2e2e" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="inputIcon">
@@ -39,11 +39,11 @@ const FormLogin = () => {
     </div>
 </form>
 
-     
+	 
+		
+	)
         
-    )
-        
-    
+	
 }
 
 export default FormLogin
