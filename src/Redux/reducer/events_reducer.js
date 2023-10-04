@@ -2,6 +2,8 @@ import * as actionTypes from '../types/types';
 
 const initialState = {
   events: [],
+  filteredEvents: [],
+  eventDetail: null, // Agregamos el estado de eventDetail
   loading: false,
   error: null,
 };
@@ -18,6 +20,7 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: action.payload,
+        filteredEvents: action.payload,
         loading: false,
         error: null,
       };
@@ -25,8 +28,24 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: [],
+        filteredEvents: [],
         loading: false,
         error: action.payload,
+      };
+    case actionTypes.FILTER_EVENTS_BY_CATEGORY:
+      return {
+        ...state,
+        filteredEvents: action.payload,
+      };
+    case actionTypes.GET_EVENT_DETAIL:
+      return {
+        ...state,
+        eventDetail: action.payload, // Agregamos el estado de eventDetail
+      };
+    case actionTypes.CLEAN_EVENT_DETAIL:
+      return {
+        ...state,
+        eventDetail: null,
       };
     default:
       return state;
