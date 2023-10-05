@@ -69,12 +69,11 @@ body {
 
 /* Estilo para las categorías del carrusel */
 .categoryItem {
-  background-color: rgba(34, 34, 34, 0.7); /* Cambia el color de fondo según tus preferencias */
+  background-color: rgba(255, 255, 255, 0.7); /* Cambia el color de fondo según tus preferencias */
   color: white; /* Texto en blanco */
   padding: 10px; /* Añade relleno según tus preferencias */
   border-radius: 5px; /* Opcional: Agrega bordes redondeados */
 }
-
 
 
 

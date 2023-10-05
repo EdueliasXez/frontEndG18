@@ -3,51 +3,28 @@ import { useDispatch } from "react-redux";
 import { buttonnk } from "react-router-dom";
 import style from "./NavBar.module.css"
 import { Link } from "react-router-dom";
+import FilterBar from "../SideBar/SideBar";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const NavBar = () =>{
-    return (
-    //  <div className={style.navbar}>
-    //      <div> 
-    //         <p className={style.pnav}>CbuttonCKY TICKET</p>
-    //      </div>
-    //           <div className={style.containernav}>
-    //              <div>
-    //                <button className={style.btn} nk to="/Login" className={style.btn2}>
-    //                  <button className={style.btn}   >LOGIN</button>
-    //                  </buttonnk>
-    //                  <button className={style.btn}  className={style.btn3}>
-    //                     <span>Categories</span>
-    //                   </button>
-    //              </div>           
-    //                 <div>
-    //                   <input
-    //                    className={style.navinput} 
-    //                   type="text"
-    //                   placeholder="Busca un Evento..."/>
-    //                   <button className={style.btn}  className={style.btn1}>
-    //                      <span>Search</span>
-    //                   </button>
-                      
-    //                </div>
-       
-    //              </div>
-               
-    //         </div>
-    
+
+
+    return (  
   
 <header> 
 <nav>
-<ul><ul>
-<button className={style.btn} > CATEGORIES </button></ul> 
-<Link to="/contact/"> <button className={style.btn} > CONTACT US </button>   </Link> 
+<ul>
+<Link to="/about/"> <button className={style.btn} > NOSOTROS </button>   </Link> 
+<Link to="/Checkout"><ShoppingCartIcon  className={style.carrito}/></Link>
 
-<Link to="/login/"> <button className={style.btn2} > LOG IN </button>   </Link> 
-<button className={style.btn1} > SEARCH </button>
+<Link to="/login/"> <button className={style.login} > LOG IN </button>   </Link> 
+{/* <button className={style.btn1} >BUSCAR </button>
 <ul>
     <input className={style.navinput} 
     type="text"
     placeholder="Busca un Evento..."/>
-</ul></ul>
+</ul> */}
+</ul>
 
 
 </nav>  
@@ -57,3 +34,4 @@ const NavBar = () =>{
 }
  
 export default NavBar;
+

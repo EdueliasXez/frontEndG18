@@ -32,12 +32,13 @@
 .button1{
   color: #ecf0f1;
 font-size: 17px;
-background-color:blue;
+background-color:rgb(170, 167, 167);
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px;
 box-shadow: 0px 6px 0px #000000c9;
 transition: all .1s;
+width: 85px;
 }
 .button1:active{
   box-shadow: 0px 2px 0px #000000c9;
@@ -45,20 +46,21 @@ transition: all .1s;
   top: 2px;  
 }
 .button1:disabled{
-  background-color: #5e5e5ea2;
+  background-color: #c0bdbda2;
   box-shadow: 0px 2px 0px #5e5e5ea2;
   border: 1px solid #5e5e5ea2;
 }
 
 .button2{
-  color: #ecf0f1;
+  color: #ffffff;
 font-size: 17px;
-background-color:black;
+background-color:rgb(170, 167, 167);
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px;
 box-shadow: 0px 6px 0px #000000c9;
 transition: all .1s;
+width: 85px;
 }
 .button2:active{
   box-shadow: 0px 2px 0px #000000c9;
@@ -66,7 +68,7 @@ transition: all .1s;
   top: 2px;  
 }
 .button2:disabled{
-  background-color: #5e5e5ea2;
+  background-color: #c0bdbda2;;
   box-shadow: 0px 2px 0px #5e5e5ea2;
   border: 1px solid #5e5e5ea2;
 }

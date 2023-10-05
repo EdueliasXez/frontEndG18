@@ -23,7 +23,9 @@
 
 
 .main {
-  margin-top: 40px; 
+  position: absolute;
+  bottom: 15%;
+  /* margin-top: 70px;  */
 }
 
 
