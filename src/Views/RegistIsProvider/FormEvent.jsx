@@ -6,14 +6,14 @@ import { getCategories } from "../../Redux/../Redux/actions/categories_actions";
 import style from "./FormEvent.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-//import { useHistory } from "react-router-dom";
-
-
+import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+
+
 
 const FormEvent = () => {
   const dispatch = useDispatch();
-  //const navigate =useHistory();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user); 
 
   // Verifica si el usuario actual tiene permisos de organizador
@@ -132,7 +132,7 @@ const FormEvent = () => {
         confirmButtonColor: "#28a745",
       }).then((result) => {
         if (result.isConfirmed) {
-          // navigate.push("/admin/eventos");
+          navigate.push("/admin/eventos");
         }
       });
     }
@@ -159,7 +159,7 @@ const FormEvent = () => {
       ) : (
         <div className={style.form__C}>
           <div className={style.card}>
-            <Link to={"/admin/eventos"}>
+            <Link to={""}>
               <button>volver a la lista</button>
             </Link>
             <h1 className={style.card__title} id="title">
