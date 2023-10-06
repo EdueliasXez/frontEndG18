@@ -25,15 +25,15 @@ const FormLogin = () => {
           const response = await fetch('/api/auth/iniciar-sesion', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json', // Indica que estás enviando datos en formato JSON
+              'Content-Type': 'application/json', 
             },
-            body: JSON.stringify({ username, password }), // Convierte los datos de inicio de sesión a JSON
+            body: JSON.stringify({ username, password }), 
           });
       
           if (response.ok) {
             // El inicio de sesión fue exitoso
             console.log('Inicio de sesión exitoso');
-            // Aquí puedes realizar acciones adicionales, como redirigir al usuario a la página de inicio, etc.
+            
           } else {
             // El inicio de sesión falló, maneja el error
             const data = await response.json(); // Lee la respuesta del backend
