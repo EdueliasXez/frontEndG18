@@ -1,4 +1,4 @@
-// authActions.js
+
 
 // Constantes de acciones
 // Acciones de inicio de sesión

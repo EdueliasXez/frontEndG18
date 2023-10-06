@@ -57,7 +57,7 @@ function Formulario() {
 
     setErrores(newErrores);
 
-   // Si no hay errores, puedes enviar los datos del formulario al backend
+   
   if (Object.values(newErrores).every((error) => error === '')) {
     try {
       // Realiza una solicitud POST al backend con los datos del formulario
