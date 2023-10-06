@@ -1,0 +1,47 @@
+.logo {
+  width: 400px;
+  margin-right: 20px;
+  left: 32%;
+  position: relative;
+}
+.h2 {
+  font-size: 45px;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+  left: 1%;
+}
+
+.about{
+  width: 1550px;
+  background-color: #ffffff;
+  position: absolute;
+  left: 13%;
+  top: 38%;
+  opacity: .8;
+  border-radius: 4%;
+
+}
+.btn{
+  
+      background-color: #dbdfdb; 
+              color: rgb(4, 4, 4);
+              border: none; 
+              padding: 5px 5px; 
+              cursor: pointer;
+              border: 1px solid  #ec8de4;
+              font-size: 18px; 
+              border-radius: 6px; 
+              margin-top: 10px; /* Espacio superior */
+              transition: 0.5s ease background;
+              position: absolute;
+              
+              left: 6.1%;
+              bottom: 95%;
+              width: 90px;
+              height: 45px;
+    }
+    .btn:hover {
+      background-color: rgb(111, 61, 159); /* Cambiar el color de fondo al pasar el mouse */
+      color: rgb(255, 255, 255);
+    }

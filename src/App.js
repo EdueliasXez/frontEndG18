@@ -4,6 +4,7 @@ import Landing from "./Views/Landing/landing";
 import Home from "./Views/Home/home";
 import EventDetail from "./Views/Detail/EventDetail";
 import FormLogin from './Components/FormLogin/FormLogin';
+import About from "./Views/About/About";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/detail/:id" element={<EventDetail />} />
           <Route path="/checkout" />
           <Route path="/login" element={<FormLogin />} />
+          <Route path="/about" element={<About/>} />
         </Routes>
       </BrowserRouter>
     </div>
