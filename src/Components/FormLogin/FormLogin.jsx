@@ -2,6 +2,7 @@ import Profile from '../Profile/Profile';
 import LogoutButton from '../Profile/logout';
 import React from 'react';
 import './styles.css';
+import { Link } from 'react-router-dom';
 import {useAuth0} from '@auth0/auth0-react';
 const FormLogin = () => {
 
@@ -9,8 +10,8 @@ const FormLogin = () => {
     const { isAuthenticated} = useAuth0();
 
     return(
-
-		<form className="form_main" action="">
+<div>
+        <form className="form_main" action="">
     <p className="heading">Login</p>
     <div className="inputContainer">
         <svg viewBox="0 0 16 16" fill="#2e2e2e" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="inputIcon">
@@ -29,21 +30,27 @@ const FormLogin = () => {
            
 <button id="button">INGRESAR</button>
     <div className="signupContainer">
+        <ul/>
         <p>¿No tienes una cuenta?</p>
         <a href="/Registro">Registrate</a>
-        {isAuthenticated ? <LogoutButton/> : <button onClick={() => loginWithRedirect()}>Ingresar con google</button>
+        {isAuthenticated ? <LogoutButton/> : <button className="btn" onClick={() => loginWithRedirect()}>Ingresar con google</button>
             }
         
         <Profile />
         
     </div>
+   
 </form>
-
-	 
-		
-	)
+         <Link to="/home">
+        <button className='btn2'>INICIO</button>
+        </Link>
+    
+</div>
+     
         
-	
+    )
+        
+    
 }
 
 export default FormLogin

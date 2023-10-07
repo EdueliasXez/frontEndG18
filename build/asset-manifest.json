@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7a70317b.css",
+    "main.js": "/static/js/main.1c400921.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Logo-Clikcy.png": "/static/media/Logo-Clikcy.41d87672b573cd287bc6.png",
+    "index.html": "/index.html",
+    "main.7a70317b.css.map": "/static/css/main.7a70317b.css.map",
+    "main.1c400921.js.map": "/static/js/main.1c400921.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7a70317b.css",
+    "static/js/main.1c400921.js"
+  ]
+}
