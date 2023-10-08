@@ -1,22 +1,59 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { getUserProfileFromToken } from "../../Redux/actions/auth_actions";
+import { logout } from "../../Redux/actions/login_actions";
+import { Link } from "react-router-dom"; 
 
-const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+const Profile = ({ isAuthenticated, logout }) => {
+  const [userData, setUserData] = useState(null);
 
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Solo obtén los datos del usuario si está autenticado
+      getUserProfileFromToken()
+        .then((data) => {
+          setUserData(data);
+        })
+        .catch((error) => {
+          console.error("Error al obtener los datos del usuario:", error);
+        });
+    }
+  }, [isAuthenticated]);
+
+  const handleLogout = () => {
+    // Llama a la acción de logout cuando se hace clic en el botón
+    logout();
+  };
 
   return (
-    isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-      </div>
-    )
+    <div>
+      {userData ? (
+        <div>
+          <h2>{userData.userName}</h2>
+          <p>{userData.email}</p>
+        </div>
+      ) : (
+        <div>Loading ...</div>
+      )}
+
+      {/* Renderiza el botón de "Cerrar sesión" y lo envuelve en un componente Link */}
+      {isAuthenticated && (
+        <div>
+          <Link to="/home"> {/* Enlace a la página de inicio */}
+            <button onClick={handleLogout}>Cerrar sesión</button>
+          </Link>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.login.isAuthenticated,
+});
+
+const mapDispatchToProps = {
+  logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
