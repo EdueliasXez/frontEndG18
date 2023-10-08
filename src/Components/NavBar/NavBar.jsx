@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import style from "./NavBar.module.css";
-import SidebarCart from "../Cart/Cart"
+import SidebarCart from "../Cart/Cart";
+import { useAuth0 } from "@auth0/auth0-react"; // Importa useAuth0
+import { connect } from 'react-redux'; // Importa connect
 
-const NavBar = () => {
+const NavBar = ({ isAuthenticated }) => {
   const [cartVisible, setCartVisible] = useState(false);
 
   const toggleCart = () => {
@@ -21,9 +23,15 @@ const NavBar = () => {
           <button onClick={toggleCart} className={style.carritoButton}>
             <ShoppingCartIcon className={style.carrito} />
           </button>
-          <Link to="/login/">
-            <button className={style.login}>LOG IN</button>
-          </Link>
+          {isAuthenticated ? (
+            <Link to="/profile/"> 
+              <button className={style.login}>PERFIL</button>
+            </Link>
+          ) : (
+            <Link to="/login/"> 
+              <button className={style.login}>LOG IN</button>
+            </Link>
+          )}
           <button className={style.btn1}>BUSCAR</button>
           <ul>
             <input
@@ -39,4 +47,8 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.login.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(NavBar);

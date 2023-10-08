@@ -6,6 +6,7 @@ import EventDetail from './Views/Detail/EventDetail';
 import FormLogin from './Components/FormLogin/FormLogin';
 import About from "./Views/About/About";
 import Checkout from './Components/Checkout/Checkout';
+import Profile from './Components/Profile/Profile';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/detail/:id" element={<EventDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<FormLogin />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About/>} />
         </Routes>
       </BrowserRouter>
