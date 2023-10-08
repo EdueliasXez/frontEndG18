@@ -24,7 +24,7 @@ function Formulario() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrores = { ...errores };
 
@@ -41,10 +41,8 @@ function Formulario() {
       newErrores.apellido = '';
     }
 
-    if (formData.email === '') {
-      newErrores.email = '*Campo obligatorio';
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(formData.email)) {
-      newErrores.email = '*Campo obligatorio';
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(formData.email)) {
+      newErrores.email = 'Correo electrónico inválido';
     } else {
       newErrores.email = '';
     }
@@ -52,17 +50,38 @@ function Formulario() {
     if (formData.contraseña === '') {
       newErrores.contraseña = '*Campo obligatorio';
     } else if (formData.contraseña.length < 6) {
-      newErrores.contraseña = '*Campo obligatorio';
+      newErrores.contraseña = 'La contraseña debe tener al menos 6 caracteres';
     } else {
       newErrores.contraseña = '';
     }
 
     setErrores(newErrores);
 
-    // Si no hay errores, puedes enviar los datos del formulario
-    if (Object.values(newErrores).every((error) => error === '')) {
-      console.log('Datos del formulario:', formData);
+   
+  if (Object.values(newErrores).every((error) => error === '')) {
+    try {
+      // Realiza una solicitud POST al backend con los datos del formulario
+      const response = await fetch('/api/auth/registro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(formData), 
+      });
+
+      if (response.ok) {
+        // El registro fue exitoso
+        console.log('Registro exitoso');
+        
+      } else {
+        
+        const data = await response.json(); 
+        console.error('Error en el registro:', data.error);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
     }
+  }
   };
 
   return (
@@ -109,52 +128,7 @@ function Formulario() {
 ¿Ya tienes una cuenta? <a href="#">Iniciar sesion</a> </p>
 </form>
   
-    /*<div>
-      <h1>Formulario</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre:</label>
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-          />
-          {errores.nombre && <p className="error">{errores.nombre}</p>}
-        </div>
-        <div>
-          <label>Apellido:</label>
-          <input
-            type="text"
-            name="apellido"
-            value={formData.apellido}
-            onChange={handleChange}
-          />
-          {errores.apellido && <p className="error">{errores.apellido}</p>}
-        </div>
-        <div>
-          <label>Correo Electrónico:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errores.email && <p className="error">{errores.email}</p>}
-        </div>
-        <div>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            name="contraseña"
-            value={formData.contraseña}
-            onChange={handleChange}
-          />
-          {errores.contraseña && <p className="error">{errores.contraseña}</p>}
-        </div>
-        <button type="submit">Enviar</button>
-      </form>
-    </div>*/
+    
   );
 }
 
