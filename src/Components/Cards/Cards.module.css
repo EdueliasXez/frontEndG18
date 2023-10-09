@@ -32,15 +32,18 @@
 .button1{
   color: #ecf0f1;
 font-size: 17px;
-background-color:blue;
+background-color:rgb(176, 176, 183);
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px;
 box-shadow: 0px 6px 0px #000000c9;
 transition: all .1s;
+display: inline-block;
+  width: 88px;
+
 }
 .button1:active{
-  box-shadow: 0px 2px 0px #000000c9;
+  box-shadow: 0px 2px 0px #f200ffc9;
   position: relative;
   top: 2px;  
 }
@@ -53,15 +56,18 @@ transition: all .1s;
 .button2{
   color: #ecf0f1;
 font-size: 17px;
-background-color:black;
+background-color:rgb(170, 167, 167);
 border: 1px solid #000000;
 border-radius: 5px;
 padding: 10px;
 box-shadow: 0px 6px 0px #000000c9;
 transition: all .1s;
+display: inline-block;
+  width: 88px;
+
 }
 .button2:active{
-  box-shadow: 0px 2px 0px #000000c9;
+  box-shadow: 0px 2px 0px #ff02d1c9;
   position: relative;
   top: 2px;  
 }
