@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
-import './styles.css'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useDispatch } from 'react-redux';
+import './styles.css';
+import { registerUser } from '../../Redux/actions/login_actions';
 
 function Formulario() {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
+    userName: '',
+    firstName: '',
+    lastName: '',
+    birthdate: '',
     email: '',
-    contraseña: '',
+    password: '',
+    country: '',
+    city: '',
+    wantsNotification: false,
+    googleProfile: null,
+    isServiceProvider: false,
   });
 
   const [errores, setErrores] = useState({
-    nombre: '',
+    userName: '',
     apellido: '',
     email: '',
     contraseña: '',
@@ -28,14 +41,13 @@ function Formulario() {
     event.preventDefault();
     const newErrores = { ...errores };
 
-    // Validaciones
-    if (formData.nombre === '') {
-      newErrores.nombre = '*Campo obligatorio';
+    if (formData.userName === '') {
+      newErrores.userName = '*Campo obligatorio';
     } else {
-      newErrores.nombre = '';
+      newErrores.userName = '';
     }
 
-    if (formData.apellido === '') {
+    if (formData.lastName === '') {
       newErrores.apellido = '*Campo obligatorio';
     } else {
       newErrores.apellido = '';
@@ -47,9 +59,9 @@ function Formulario() {
       newErrores.email = '';
     }
 
-    if (formData.contraseña === '') {
+    if (formData.password === '') {
       newErrores.contraseña = '*Campo obligatorio';
-    } else if (formData.contraseña.length < 6) {
+    } else if (formData.password.length < 6) {
       newErrores.contraseña = 'La contraseña debe tener al menos 6 caracteres';
     } else {
       newErrores.contraseña = '';
@@ -57,79 +69,144 @@ function Formulario() {
 
     setErrores(newErrores);
 
-   
-  if (Object.values(newErrores).every((error) => error === '')) {
-    try {
-      // Realiza una solicitud POST al backend con los datos del formulario
-      const response = await fetch('/api/auth/registro', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify(formData), 
-      });
-
-      if (response.ok) {
-        // El registro fue exitoso
-        console.log('Registro exitoso');
-        
-      } else {
-        
-        const data = await response.json(); 
-        console.error('Error en el registro:', data.error);
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
+    if (!Object.values(newErrores).some((error) => error !== '')) {
+      dispatch(registerUser(formData))
+        .then(() => {
+          console.log('Registro exitoso');
+        })
+        .catch((error) => {
+          console.error('Error en el registro:', error);
+        });
     }
-  }
   };
 
   return (
-    
     <form className="form" onSubmit={handleSubmit}>
-    <p className="title">Registro </p>
-    <p className="message">Regístrese ahora y obtenga acceso completo a nuestra aplicación </p>
-        <div className="flex">
+      <p className="title">Registro</p>
+      <p className="message">Regístrese ahora y obtenga acceso completo a nuestra aplicación</p>
+      <div className="flex">
         <label>
-            <input className="input" type="text" placeholder="Nombre" name="nombre"
+          <input
+            className="input"
+            type="text"
+            placeholder="Nombre"
+            name="nombre"
             value={formData.nombre}
-            onChange={handleChange}/>
-            
-            {errores.nombre && <p className="error">{errores.nombre}</p>}
+            onChange={handleChange}
+          />
+          {errores.nombre && <p className="error">{errores.nombre}</p>}
         </label>
-
-        <label>
-            <input className="input" type="text" placeholder="Apellido"  name="apellido"
-            value={formData.apellido}
-            onChange={handleChange}/>
-            
-            {errores.apellido && <p className="error">{errores.apellido}</p>}
-        </label>
-    </div>  
-            
-    <label>
-        <input className="input" type="email" placeholder="email"  name="email"
-            value={formData.email}
-            onChange={handleChange} />
-        
-        {errores.email && <p className="error">{errores.email}</p>}
-    </label> 
-        
-    <label>
-        <input className="input" type="password" placeholder="contraseña" name="contraseña"
-            value={formData.contraseña}
-            onChange={handleChange}/>
-        
-        {errores.contraseña && <p className="error">{errores.contraseña}</p>}
-    </label>
-    
-    <button className="submit" type="submit">Registrarse</button>
-    <p className="signin">
-¿Ya tienes una cuenta? <a href="#">Iniciar sesion</a> </p>
-</form>
   
-    
-  );
+        <label>
+          <input
+            className="input"
+            type="text"
+            placeholder="Apellido"
+            name="apellido"
+            value={formData.apellido}
+            onChange={handleChange}
+          />
+          {errores.apellido && <p className="error">{errores.apellido}</p>}
+        </label>
+      </div>
+  
+      <label>
+        <input
+          className="input"
+          type="email"
+          placeholder="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        {errores.email && <p className="error">{errores.email}</p>}
+      </label>
+  
+      <label>
+        <input
+          className="input"
+          type="password"
+          placeholder="Contraseña"
+          name="contraseña"
+          value={formData.contraseña}
+          onChange={handleChange}
+        />
+        {errores.contraseña && <p className="error">{errores.contraseña}</p>}
+      </label>
+  
+      <label>
+        <input
+          className="input"
+          type="text"
+          placeholder="País"
+          name="country"
+          value={formData.country}
+          onChange={handleChange}
+        />
+      </label>
+  
+      <label>
+        <input
+          className="input"
+          type="text"
+          placeholder="Ciudad"
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+        />
+      </label>
+  
+      <label>
+        <input
+          type="checkbox"
+          name="wantsNotification"
+          checked={formData.wantsNotification}
+          onChange={(e) => setFormData({ ...formData, wantsNotification: e.target.checked })}
+        />
+        Deseo recibir notificaciones
+      </label>
+  
+      <label>
+        <input
+          type="checkbox"
+          name="isServiceProvider"
+          checked={formData.isServiceProvider}
+          onChange={(e) => setFormData({ ...formData, isServiceProvider: e.target.checked })}
+        />
+        Soy un proveedor de servicios
+      </label>
+
+      <label>
+        <input
+          className="input"
+          type="text"
+          placeholder="Nombre de usuario"
+          name="userName"
+          value={formData.userName}
+          onChange={handleChange}
+        />
+        {errores.userName && <p className="error">{errores.userName}</p>}
+      </label>
+  
+      <label>
+        Fecha de Nacimiento:
+        <DatePicker
+          selected={formData.birthdate}
+          onChange={(date) => setFormData({ ...formData, birthdate: date })}
+          dateFormat="yyyy-MM-dd"
+          showYearDropdown
+          scrollableYearDropdown
+        />
+      </label>
+  
+      <button className="submit" type="submit">
+        Registrarse
+      </button>
+      <p className="signin">
+        ¿Ya tienes una cuenta? <a href="#">Iniciar sesión</a>
+      </p>
+    </form>
+  );  
 }
 
 export default Formulario;
