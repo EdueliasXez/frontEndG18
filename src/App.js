@@ -7,6 +7,9 @@ import FormLogin from './Components/FormLogin/FormLogin';
 import About from "./Views/About/About";
 import Checkout from './Components/Checkout/Checkout';
 import Profile from './Components/Profile/Profile';
+import SucessPage from './Components/Checkout/Estados/Sucess'
+import CancelPage from './Components/Checkout/Estados/Cancel'
+import Formulario from './Components/Form/Formulario';
 
 function App() {
   return (
@@ -18,8 +21,11 @@ function App() {
           <Route path="/detail/:id" element={<EventDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<FormLogin />} />
+          <Route path="/register" element={<Formulario />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About/>} />
+          <Route path="/checkout/sucess" element={<SucessPage/>} />
+          <Route path="/checkout/cancel" element={<CancelPage />} />
         </Routes>
       </BrowserRouter>
     </div>

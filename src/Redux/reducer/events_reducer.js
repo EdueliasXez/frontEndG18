@@ -3,7 +3,7 @@ import * as actionTypes from '../types/types';
 const initialState = {
   events: [],
   filteredEvents: [],
-  eventDetail: null, // Agregamos el estado de eventDetail
+  eventDetail: null, 
   loading: false,
   error: null,
 };
@@ -37,6 +37,11 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         filteredEvents: action.payload,
       };
+      case actionTypes.FILTER_EVENTS:
+  return {
+    ...state,
+    filteredEvents: action.payload,
+  };
     case actionTypes.GET_EVENT_DETAIL:
       return {
         ...state,

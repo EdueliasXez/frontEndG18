@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getUserProfileFromToken } from "../../Redux/actions/auth_actions";
 import { logout } from "../../Redux/actions/login_actions";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
+import styles from "./Profile.module.css"; 
 
 const Profile = ({ isAuthenticated, logout }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Solo obtén los datos del usuario si está autenticado
       getUserProfileFromToken()
         .then((data) => {
           setUserData(data);
@@ -21,26 +21,35 @@ const Profile = ({ isAuthenticated, logout }) => {
   }, [isAuthenticated]);
 
   const handleLogout = () => {
-    // Llama a la acción de logout cuando se hace clic en el botón
     logout();
   };
 
   return (
-    <div>
+    <div className={styles["profile-container"]}>
       {userData ? (
         <div>
-          <h2>{userData.userName}</h2>
-          <p>{userData.email}</p>
+          <h2 className={styles["profile-header"]}>Bienvenido, {userData.userName}!</h2>
+          <div className={styles["profile-info"]}>
+            <p><strong>Nombre de usuario:</strong> {userData.userName}</p>
+            <p><strong>Nombre:</strong> {userData.firstName} {userData.lastName}</p>
+            <p><strong>Fecha de nacimiento:</strong> {userData.birthdate}</p>
+            <p><strong>Correo electrónico:</strong> {userData.email}</p>
+            <p><strong>País:</strong> {userData.country}</p>
+            <p><strong>Ciudad:</strong> {userData.city}</p>
+            <p><strong>¿Es proveedor de servicios?</strong> {userData.isServiceProvider ? "Sí" : "No"}</p>
+          </div>
         </div>
       ) : (
         <div>Loading ...</div>
       )}
 
-      {/* Renderiza el botón de "Cerrar sesión" y lo envuelve en un componente Link */}
       {isAuthenticated && (
         <div>
-          <Link to="/home"> {/* Enlace a la página de inicio */}
-            <button onClick={handleLogout}>Cerrar sesión</button>
+          <Link to="/home">
+            <button className={styles["logout-button"]} onClick={handleLogout}>Cerrar sesión</button>
+          </Link>
+          <Link to="/home"> 
+            <button className={styles["home-button"]}>Volver al Inicio</button>
           </Link>
         </div>
       )}
