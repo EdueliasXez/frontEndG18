@@ -90,15 +90,19 @@
 }
 
 .buttonGroup button {
-  background-color: #007bff;
+  background-color: #6d6f72;
   color: #fff;
-  border: none;
+  border: 2px;
+  border-color: #ff22c0;
   cursor: pointer;
   font-size: 1rem;
-  padding: 10px 20px;
+  padding: 5px 10px;
   margin: 0 10px;
+  display: inline-block;
+  width: 88px;
 }
 
 .buttonGroup button:hover {
-  background-color: #0056b3;
+  background-color: #d448d0;
 }
+

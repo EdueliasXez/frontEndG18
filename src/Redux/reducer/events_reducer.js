@@ -38,6 +38,11 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         filteredEvents: action.payload,
       };
+      case actionTypes.FILTER_EVENTS:
+  return {
+    ...state,
+    filteredEvents: action.payload,
+  };
     case actionTypes.GET_EVENT_DETAIL:
       return {
         ...state,

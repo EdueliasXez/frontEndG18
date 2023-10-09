@@ -84,3 +84,28 @@ export const postCreateEvent = (form) => async (dispatch) => {
 export const cleanDetail = () => ({
   type: actionTypes.CLEAN_EVENT_DETAIL, 
 });
+
+export const filterEvents = (searchText) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const removeAccents = (str) => {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+
+    const normalizedSearchText = removeAccents(searchText.toLowerCase());
+
+    const filteredEvents = events.events.filter((event) => {
+      const eventInfo = removeAccents(Object.values(event).join(" ")).toLowerCase();
+      const keywords = normalizedSearchText.split(" ");
+      return keywords.some((keyword) => eventInfo.includes(` ${keyword} `));
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS,
+      payload: filteredEvents,
+    });
+  };
+};
+
+
