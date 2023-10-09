@@ -63,6 +63,23 @@ export const getEventDetail = (eventId) => async (dispatch) => {
     console.error('Error al obtener el detalle del evento:', error);
   }
 };
+export const postCreateEvent = (form) => async (dispatch) => {
+  try {
+    const response = await axios.post('/events', form);
+    
+    // Verificar la respuesta del servidor antes de despachar la acción
+    return dispatch({
+      type: actionTypes.POST_CREATE_EVENT,
+      payload: {
+          data: response.data,
+          status: response.status
+          }
+      });
+
+  } catch (error) {
+    console.error('Error creating Event:', error);
+  }
+};
 
 export const cleanDetail = () => ({
   type: actionTypes.CLEAN_EVENT_DETAIL, 

@@ -5,6 +5,8 @@ import Home from "./Views/Home/home";
 import EventDetail from "./Views/Detail/EventDetail";
 import FormLogin from './Components/FormLogin/FormLogin';
 import About from "./Views/About/About";
+import Form from "./Views/Form/FormEvent";
+import CreateIsProvider from "./Views/CreateIsProvider/create"
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/checkout" />
           <Route path="/login" element={<FormLogin />} />
           <Route path="/about" element={<About/>} />
+          <Route path="/FormEvent" element={<Form/>} /> 
+          <Route path="/create" element={<CreateIsProvider/>} /> 
         </Routes>
       </BrowserRouter>
     </div>
