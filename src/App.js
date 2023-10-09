@@ -24,7 +24,7 @@ function App() {
           <Route path="/register" element={<Formulario />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About/>} />
-          <Route path="/checkout/sucess" element={<SucessPage/>} />
+          <Route path="/checkout/success" element={<SucessPage/>} />
           <Route path="/checkout/cancel" element={<CancelPage />} />
         </Routes>
       </BrowserRouter>
