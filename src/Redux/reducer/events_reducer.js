@@ -41,7 +41,7 @@ const eventReducer = (state = initialState, action) => {
     case actionTypes.GET_EVENT_DETAIL:
       return {
         ...state,
-        eventDetail: action.payload, // Agregamos el estado de eventDetail
+        eventDetail: action.payload, 
       };
       case  actionTypes.POST_CREATE_EVENT:
         if (action.payload.status === 200) {

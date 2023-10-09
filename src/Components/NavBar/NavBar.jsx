@@ -1,35 +1,54 @@
-import React, {useState} from "react";
-import { useDispatch } from "react-redux";
-import { buttonnk } from "react-router-dom";
-import style from "./NavBar.module.css"
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import style from "./NavBar.module.css";
+import SidebarCart from "../Cart/Cart";
+import { useAuth0 } from "@auth0/auth0-react"; // Importa useAuth0
+import { connect } from 'react-redux'; // Importa connect
 
-const NavBar = () =>{
+const NavBar = ({ isAuthenticated }) => {
+  const [cartVisible, setCartVisible] = useState(false);
 
+  const toggleCart = () => {
+    setCartVisible(!cartVisible);
+  };
 
-    return (  
-  
-<header> 
-<nav>
-<ul>
-<Link to="/about/"> <button className={style.btn} > NOSOTROS </button>   </Link> 
-<Link to="/Checkout"><ShoppingCartIcon  className={style.carrito}/></Link>
+  return (
+    <header>
+      <nav>
+        <ul>
+          <Link to="/about/">
+            <button className={style.btn}>NOSOTROS</button>
+          </Link>
+          <button onClick={toggleCart} className={style.carritoButton}>
+            <ShoppingCartIcon className={style.carrito} />
+          </button>
+          {isAuthenticated ? (
+            <Link to="/profile/"> 
+              <button className={style.login}>PERFIL</button>
+            </Link>
+          ) : (
+            <Link to="/login/"> 
+              <button className={style.login}>LOG IN</button>
+            </Link>
+          )}
+          <button className={style.btn1}>BUSCAR</button>
+          <ul>
+            <input
+              className={style.navinput}
+              type="text"
+              placeholder="Busca un Evento..."
+            />
+          </ul>
+        </ul>
+      </nav>
+      {cartVisible && <SidebarCart />}
+    </header>
+  );
+};
 
-<Link to="/login/"> <button className={style.login} > LOG IN </button>   </Link> 
-<button className={style.btn1} >BUSCAR </button>
-<ul>
-    <input className={style.navinput} 
-    type="text"
-    placeholder="Busca un Evento..."/>
-</ul>
-</ul>
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.login.isAuthenticated,
+});
 
-
-</nav>  
-</header>
-
-    )
-}
- 
-export default NavBar;
+export default connect(mapStateToProps)(NavBar);
