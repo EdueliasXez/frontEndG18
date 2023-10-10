@@ -3,7 +3,8 @@ import * as actionTypes from '../types/types';
 const initialState = {
   events: [],
   filteredEvents: [],
-  eventDetail: null, 
+  eventDetail: null, // Agregamos el estado de eventDetail
+  postCreateEvent : [],
   loading: false,
   error: null,
 };
@@ -47,6 +48,17 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         eventDetail: action.payload, 
       };
+      case  actionTypes.POST_CREATE_EVENT:
+        if (action.payload.status === 200) {
+          return {
+            ...state,
+          };
+        } else {
+          return {
+            ...state,
+            error: action.payload.data,
+          };
+        }
     case actionTypes.CLEAN_EVENT_DETAIL:
       return {
         ...state,
