@@ -59,14 +59,13 @@ export const registerUser = (userData) => {
 
     // Devolver la promesa directamente
     return axios
-      .post('/user/register', userData)
+      .post('user/register', userData)
       .then(() => {
         dispatch(registrationSuccess());
       })
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(registrationFailure(errorMsg));
-        // Rechazar la promesa para que el error se propague
         return Promise.reject(error);
       });
   };

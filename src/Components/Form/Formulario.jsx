@@ -40,6 +40,7 @@ function Formulario() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrores = { ...errores };
+    
 
     if (formData.userName === '') {
       newErrores.userName = '*Campo obligatorio';
