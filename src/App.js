@@ -14,6 +14,8 @@ import QRCodeGenerator from "./Components/TicketCode/QRCodeGenerator";
 import Dashboard from "./Views/Admin/Dashboard/Dashboard";
 import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
 import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsuariosAdmin";
+import EventForm from "./Views/CreateIsProvider/Create"
+
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route path="/admin" element={<Dashboard/>} />
           <Route path="/admin/events" element={<EventAdmin/>} />
           <Route path="/admin/users" element={<UsuariosAdmin/>} />
+          <Route path="/profile/createEvent" element={<EventForm/>} />
         </Routes>
       </BrowserRouter>
     </div>

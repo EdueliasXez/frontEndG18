@@ -52,6 +52,25 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         eventDetail: null,
       };
+      case actionTypes.CREATE_EVENT_REQUEST:
+  return {
+    ...state,
+    loading: true,
+    error: null,
+  };
+case actionTypes.CREATE_EVENT_SUCCESS:
+  return {
+    ...state,
+    events: [...state.events, action.payload], 
+    loading: false,
+    error: null,
+  };
+case actionTypes.CREATE_EVENT_FAILURE:
+  return {
+    ...state,
+    loading: false,
+    error: action.payload,
+  };
     default:
       return state;
   }

@@ -37,7 +37,7 @@ export const filterEventsByCategory = (selectedCategories) => {
 
     const filteredEvents = events.events.filter((event) => {
       return (
-        selectedCategories.length === 0 || // Si no se seleccionan categorías, no se aplica filtro
+        selectedCategories.length === 0 || 
         selectedCategories.every((selectedCategory) =>
           event.categories.some((category) => category._id === selectedCategory.value)
         )
@@ -91,19 +91,32 @@ export const filterEvents = (searchText) => {
   };
 };
 
-export const postCreateEvent = (form) => async (dispatch) => {
-  try {
-    const response = await axios.post('/events', form);
-    
-    return dispatch({
-      type: actionTypes.POST_CREATE_EVENT,
-      payload: {
-          data: response.data,
-          status: response.status
-          }
-      });
+export const createEventRequest = () => ({
+  type: actionTypes.CREATE_EVENT_REQUEST,
+});
 
-  } catch (error) {
-    console.error('Error creating Event:', error);
-  }
+export const createEventSuccess = (event) => ({
+  type: actionTypes.CREATE_EVENT_SUCCESS,
+  payload: event,
+});
+
+export const createEventFailure = (error) => ({
+  type: actionTypes.CREATE_EVENT_FAILURE,
+  payload: error,
+});
+
+export const createEvent = (eventData) => {
+  return (dispatch) => {
+    dispatch(createEventRequest());
+    axios
+      .post('/events/create', eventData)
+      .then((response) => {
+        const createdEvent = response.data;
+        dispatch(createEventSuccess(createdEvent));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(createEventFailure(errorMsg));
+      });
+  };
 };
