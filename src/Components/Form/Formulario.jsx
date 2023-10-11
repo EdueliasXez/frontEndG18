@@ -3,10 +3,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import './styles.css';
+import { connect } from 'react-redux';
 import { registerUser } from '../../Redux/actions/login_actions';
 
-function Formulario() {
-  const dispatch = useDispatch();
+function Formulario(props) {
+  const {
+    dispatch, // Acceso a la función dispatch
+    registrationRequest, // Acceso a las acciones de registro
+    registrationSuccess,
+    registrationFailure,
+  } = props;
+
 
   const [formData, setFormData] = useState({
     userName: '',
@@ -71,11 +78,16 @@ function Formulario() {
     setErrores(newErrores);
 
     if (!Object.values(newErrores).some((error) => error !== '')) {
+      dispatch(registrationRequest()); // 2. Dispatch la acción de inicio de registro
+
+      // Llama a la acción de registro de usuario pasando formData
       dispatch(registerUser(formData))
         .then(() => {
+          dispatch(registrationSuccess()); // 3. Dispatch la acción de registro exitoso
           console.log('Registro exitoso');
         })
         .catch((error) => {
+          dispatch(registrationFailure(error)); // 4. Dispatch la acción de registro fallido
           console.error('Error en el registro:', error);
         });
     }
@@ -208,6 +220,14 @@ function Formulario() {
       </p>
     </form>
   );  
+  
 }
-
-export default Formulario;
+const mapStateToProps = (state) => {
+  return {
+    // Mapea las partes del estado que necesitas
+    registrationRequest: state.login.registering,
+    registrationSuccess: state.login.registered,
+    registrationFailure: state.login.error,
+  };
+};
+export default connect(mapStateToProps)(Formulario);
