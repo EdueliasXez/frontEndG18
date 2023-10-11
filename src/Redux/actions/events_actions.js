@@ -91,4 +91,19 @@ export const filterEvents = (searchText) => {
   };
 };
 
+export const postCreateEvent = (form) => async (dispatch) => {
+  try {
+    const response = await axios.post('/events', form);
+    
+    return dispatch({
+      type: actionTypes.POST_CREATE_EVENT,
+      payload: {
+          data: response.data,
+          status: response.status
+          }
+      });
 
+  } catch (error) {
+    console.error('Error creating Event:', error);
+  }
+};
