@@ -1,0 +1,80 @@
+.form__C {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .card__title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  
+  .label__form {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .card__form {
+    margin-bottom: 15px;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  
+  .card__content {
+    color: #f44336;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+ 
+  .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  
+  .permissionDenied {
+    color: #f44336;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+ 
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  
+  .Formulario {
+    margin-top: 20px;
+  }
+  
