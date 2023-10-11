@@ -1,280 +1,209 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { postCreateEvent } from "../../Redux/actions/events_actions";
-import { getCategories } from "../../Redux/actions/categories_actions";
-import style from "./create.module.css";
-import axios from "axios";
-import validacion from "./Validacion.js"; 
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createEvent } from '../../Redux/actions/events_actions'; 
+import axios from 'axios';
+import './Create.css'
 
-const Create = () => {
+function EventForm() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-
-  
-  const isOrganizer = user && user.role === "organizer";
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
-
-  const [form, setForm] = useState({
-    title: "",
-    summary: "",
-    price: "",
-    stock: "",
-    images: "",
-    active: "",
-    categories: "",
-    serviceProviderId: "",
+  const [eventData, setEventData] = useState({
+    title: '',
+    summary: '',
+    price: 0,
+    stock: 0,
+    date: '',
+    images: [], 
+    active: true,
+    serviceProviderId: '',
+    categoryIds: [],
   });
 
-  const [errors, setErrors] = useState({
-    title: "",
-    summary: "",
-    price: "",
-    stock: "",
-    images: "",
-    active: "",
-    categories: "",
-    serviceProviderId: "",
+  const [placeData, setPlaceData] = useState({
+    country: '',
+    city: '',
+    direction: '',
+    postalCode: '',
+    dateAndTime: {
+      date: '',
+      time: '',
+    },
+    serviceProviderId: '',
   });
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("key", "356561696592386");
+  const [imageFiles, setImageFiles] = useState([]); 
 
-    try {
-      const response = await axios.post("https://cloudinary.com/users/login", formData);
-      const imageUrl = response.data.data.url;
-      setForm({
-        ...form,
-        images: imageUrl,
-      });
-      validateField("images", imageUrl);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
-
-  const handleSelectCategory = (event) => {
-    const selectedCategory = event.target.value;
-    setForm({
-      ...form,
-      categories: selectedCategory,
-    });
-    validateField("categories", selectedCategory);
-  };
-
-  const changeHandler = (event) => {
-    const { name, value } = event.target;
-    setForm({
-      ...form,
+  const handleEventChange = (e) => {
+    const { name, value } = e.target;
+    setEventData({
+      ...eventData,
       [name]: value,
     });
-    validateField(name, value);
   };
 
-  const validateField = (fieldName, value) => {
-    let errorMessage = "";
-    if (fieldName === "title") {
-      errorMessage = value.trim() === "" ? "Se requiere el nombre." : "";
-    } else if (fieldName === "summary") {
-      errorMessage = value.trim() === "" ? "Por favor ingresa un resumen." : "";
-    } else if (fieldName === "images") {
-      errorMessage = value.trim() === "" ? "¡Inserte una imagen!" : "";
-    } else if (fieldName === "price") {
-      errorMessage = isNaN(value) || value <= 0 ? "¡Por favor ingrese un precio válido!" : "";
-    } else if (fieldName === "stock") {
-      errorMessage = isNaN(value) || value <= 0 ? "¡Debe ser un número mayor a 0!" : "";
-    } else if (fieldName === "categories") {
-      errorMessage = value.trim() === "" ? "¡Por favor ingrese una categoría!" : "";
-    }
-
-    setErrors({
-      ...errors,
-      [fieldName]: errorMessage,
+  const handlePlaceChange = (e) => {
+    const { name, value } = e.target;
+    setPlaceData({
+      ...placeData,
+      [name]: value,
     });
   };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (!isOrganizer) {
-      Swal.fire({
-        title: "Permiso denegado",
-        text: "Solo los organizadores pueden agregar eventos.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-    } else {
-      const errorsFromValidation = validacion(form); 
-
-      if (Object.keys(errorsFromValidation).length > 0) {
-       
-        setErrors({
-          ...errors,
-          ...errorsFromValidation,
-        });
-
-        Swal.fire({
-          title: "¡No se pudo crear el evento!",
-          text: "Por favor llene las casillas vacías o revise sus errores",
-          icon: "warning",
-          confirmButtonText: "Ok",
-        });
-      } else {
-        const eventData = {
-          ...form,
-          organizerId: user.id,
-        };
-
-        dispatch(postCreateEvent(eventData));
-        setForm({
-          title: "",
-          summary: "",
-          price: "",
-          stock: "",
-          images: "",
-          active: "",
-          categories: "",
-          serviceProviderId: "",
-        });
-
-        Swal.fire({
-          title: "¡Evento creado correctamente!",
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#28a745",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate("/admin/eventos");
-          }
-        });
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const imageUrls = [...imageFiles];
+  
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].type.startsWith('image/')) {
+        const imageUrl = URL.createObjectURL(files[i]);
+        imageUrls.push(imageUrl);
       }
+    }
+  
+    setImageFiles(imageUrls);
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const data = {
+        images: imageFiles,
+      };
+  
+      const response = await axios.post('/cloudinary/upload', data);
+  
+      if (response.status === 200) {
+        const imageData = response.data;
+  
+        const imageUrls = imageData.imageUrl;
+  
+        setEventData({
+          ...eventData,
+          images: imageUrls,
+        });
+  
+        console.log({ event: eventData, place: placeData });
+        dispatch(createEvent({ event: eventData, place: placeData }));
+      } else {
+
+      }
+    } catch (error) {
+      console.error(error);
+
     }
   };
 
-  const eventCategories = useSelector((state) => state.categories);
-
   return (
-    <div className={style.form__C}>
-      <div className={style.card}>
-        <Link to={"/admin/eventos"}>
-          <button>volver a la lista</button>
-        </Link>
-        <h1 className={style.card__title} id="title">
-          Agregar un nuevo Evento
-        </h1>
-
-        {isOrganizer ? (
-          <form onSubmit={submitHandler} className={style.Formulario}>
-            <div className={style.card__form}>
-              <label className={style.label__form}>Nombre del evento: </label>
-              <input
-                type="text"
-                value={form.title}
-                onChange={changeHandler}
-                name="title"
-                placeholder="Escribe el nombre del evento..."
-              />
-              {errors.title && (
-                <strong className={style.card__content}>{errors.title}</strong>
-              )}
-            </div>
-
-            <div className={style.card__form}>
-              <label className={style.label__form}>Resumen: </label>
-              <textarea
-                value={form.summary}
-                onChange={changeHandler}
-                name="summary"
-                placeholder="Escribe un resumen..."
-              />
-              {errors.summary && (
-                <strong className={style.card__content}>{errors.summary}</strong>
-              )}
-            </div>
-
-            <div className={style.card__form}>
-              <label className={style.label__form}>Precio: </label>
-              <input
-                type="number"
-                value={form.price}
-                onChange={changeHandler}
-                name="price"
-                placeholder="Ingrese el precio..."
-              />
-              {errors.price && (
-                <strong className={style.card__content}>{errors.price}</strong>
-              )}
-            </div>
-
-            <div className={style.card__form}>
-              <label className={style.label__form}>Stock: </label>
-              <input
-                type="number"
-                value={form.stock}
-                onChange={changeHandler}
-                name="stock"
-                placeholder="Ingrese el stock..."
-              />
-              {errors.stock && (
-                <strong className={style.card__content}>{errors.stock}</strong>
-              )}
-            </div>
-
-            <div className={style.card__form}>
-              <label className={style.label__form}>Categoría: </label>
-              <select
-                value={form.categories}
-                onChange={handleSelectCategory}
-                name="categories"
-              >
-                <option value="">Seleccione una categoría...</option>
-                {eventCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              {errors.categories && (
-                <strong className={style.card__content}>{errors.categories}</strong>
-              )}
-            </div>
-
-            <div className={style.card__form}>
-              <label className={style.label__form}>Imágenes: </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                name="images"
-              />
-              {errors.images && (
-                <strong className={style.card__content}>{errors.images}</strong>
-              )}
-            </div>
-
-            <button className={style.btn} type="submit">
-              Crear evento
-            </button>
-          </form>
-        ) : (
-          <div className={style.permissionDenied}>
-            Solo los organizadores pueden agregar eventos.
-          </div>
-        )}
-
-        <br></br>
-      </div>
-      <br></br>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Crear un Evento</h2>
+      <label>Título del Evento</label>
+      <input
+        type="text"
+        name="title"
+        value={eventData.title}
+        onChange={handleEventChange}
+      />
+      <label>Resumen del Evento</label>
+      <input
+        type="text"
+        name="summary"
+        value={eventData.summary}
+        onChange={handleEventChange}
+      />
+      <label>Precio</label>
+      <input
+        type="number"
+        name="price"
+        value={eventData.price}
+        onChange={handleEventChange}
+      />
+      <label>Stock</label>
+      <input
+        type="number"
+        name="stock"
+        value={eventData.stock}
+        onChange={handleEventChange}
+      />
+      <label>Fecha del Evento</label>
+      <input
+        type="datetime-local"
+        name="date"
+        value={eventData.date}
+        onChange={handleEventChange}
+      />
+      <label>Imágenes del Evento</label>
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageChange}
+        name="file"
+      />
+      <label>ID del Proveedor de Servicios</label>
+      <input
+        type="text"
+        name="serviceProviderId"
+        value={eventData.serviceProviderId}
+        onChange={handleEventChange}
+      />
+      <label>Categorías del Evento</label>
+      <input
+        type="text"
+        name="categoryIds"
+        value={eventData.categoryIds}
+        onChange={handleEventChange}
+      />
+      <label>País del Lugar</label>
+      <input
+        type="text"
+        name="country"
+        value={placeData.country}
+        onChange={handlePlaceChange}
+      />
+      <label>Ciudad del Lugar</label>
+      <input
+        type="text"
+        name="city"
+        value={placeData.city}
+        onChange={handlePlaceChange}
+      />
+      <label>Dirección del Lugar</label>
+      <input
+        type="text"
+        name="direction"
+        value={placeData.direction}
+        onChange={handlePlaceChange}
+      />
+      <label>Código Postal del Lugar</label>
+      <input
+        type="text"
+        name="postalCode"
+        value={placeData.postalCode}
+        onChange={handlePlaceChange}
+      />
+      <label>Fecha y Hora del Lugar</label>
+      <input
+        type="datetime-local"
+        name="dateAndTime"
+        value={placeData.dateAndTime.date}
+        onChange={handlePlaceChange}
+      />
+      <input
+        type="text"
+        name="dateAndTime"
+        value={placeData.dateAndTime.time}
+        onChange={handlePlaceChange}
+      />
+      <label>ID del Proveedor de Servicios del Lugar</label>
+      <input
+        type="text"
+        name="serviceProviderId"
+        value={placeData.serviceProviderId}
+        onChange={handlePlaceChange}
+      />
+      <button type="submit">Crear Evento</button>
+    </form>
   );
-};
+}
 
-export default Create;
+export default EventForm;
