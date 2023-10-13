@@ -3,10 +3,18 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import './styles.css';
-import { registerUser } from '../../Redux/actions/login_actions';
+import { connect } from 'react-redux';
+import { registerUser, registrationRequest, registrationSuccess, registrationFailure } from '../../Redux/actions/login_actions';
 
-function Formulario() {
-  const dispatch = useDispatch();
+function Formulario(props) {
+  console.log(props);
+  const {
+    dispatch, // Acceso a la función dispatch
+    registered,
+    registering,
+  } = props;
+
+
 
   const [formData, setFormData] = useState({
     userName: '',
@@ -24,13 +32,18 @@ function Formulario() {
 
   const [errores, setErrores] = useState({
     userName: '',
-    apellido: '',
+    firstName: '',
+    lastName: '',
+    birthdate: '',
     email: '',
-    contraseña: '',
+    password: '',
+    country: '',
+    city: '',
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
@@ -40,6 +53,7 @@ function Formulario() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrores = { ...errores };
+    
 
     if (formData.userName === '') {
       newErrores.userName = '*Campo obligatorio';
@@ -47,10 +61,16 @@ function Formulario() {
       newErrores.userName = '';
     }
 
-    if (formData.lastName === '') {
-      newErrores.apellido = '*Campo obligatorio';
+    if (formData.firstName === '') {
+      newErrores.firstName = '*Campo obligatorio';
     } else {
-      newErrores.apellido = '';
+      newErrores.firstName = '';
+    }
+
+    if (formData.lastName === '') {
+      newErrores.lastName = '*Campo obligatorio';
+    } else {
+      newErrores.lastName = '';
     }
 
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(formData.email)) {
@@ -60,23 +80,43 @@ function Formulario() {
     }
 
     if (formData.password === '') {
-      newErrores.contraseña = '*Campo obligatorio';
+      newErrores.password = '*Campo obligatorio';
     } else if (formData.password.length < 6) {
-      newErrores.contraseña = 'La contraseña debe tener al menos 6 caracteres';
+      newErrores.password = 'La contraseña debe tener al menos 6 caracteres';
     } else {
-      newErrores.contraseña = '';
+      newErrores.password = '';
+    }
+
+    if (formData.country === '') {
+      newErrores.country = '*Campo obligatorio';
+    } else {
+      newErrores.country = '';
+    }
+
+    if (formData.city === '') {
+      newErrores.city = '*Campo obligatorio';
+    } else {
+      newErrores.city = '';
     }
 
     setErrores(newErrores);
 
-    if (!Object.values(newErrores).some((error) => error !== '')) {
+    if (!Object.values(newErrores).some((error) => error !== '' && error !== false)) {
+      dispatch(registrationRequest()); // 2. Dispatch la acción de inicio de registro
+
+      // Llama a la acción de registro de usuario pasando formData
       dispatch(registerUser(formData))
         .then(() => {
+          dispatch(registrationSuccess()); // 3. Dispatch la acción de registro exitoso
           console.log('Registro exitoso');
         })
         .catch((error) => {
+          dispatch(registrationFailure(error)); // 4. Dispatch la acción de registro fallido
           console.error('Error en el registro:', error);
+          alert('error no se pudo registrar el usuario');
         });
+    } else {
+      console.log('error', newErrores);
     }
   };
 
@@ -90,11 +130,11 @@ function Formulario() {
             className="input"
             type="text"
             placeholder="Nombre"
-            name="nombre"
-            value={formData.nombre}
+            name="firstName"
+            value={formData.firstName}
             onChange={handleChange}
           />
-          {errores.nombre && <p className="error">{errores.nombre}</p>}
+          {errores.firstName && <p className="error">{errores.firstName}</p>}
         </label>
   
         <label>
@@ -102,11 +142,11 @@ function Formulario() {
             className="input"
             type="text"
             placeholder="Apellido"
-            name="apellido"
-            value={formData.apellido}
+            name="lastName"
+            value={formData.lastName}
             onChange={handleChange}
           />
-          {errores.apellido && <p className="error">{errores.apellido}</p>}
+          {errores.lastName && <p className="error">{errores.lastName}</p>}
         </label>
       </div>
   
@@ -127,11 +167,11 @@ function Formulario() {
           className="input"
           type="password"
           placeholder="Contraseña"
-          name="contraseña"
-          value={formData.contraseña}
+          name="password"
+          value={formData.password}
           onChange={handleChange}
         />
-        {errores.contraseña && <p className="error">{errores.contraseña}</p>}
+        {errores.password && <p className="error">{errores.password}</p>}
       </label>
   
       <label>
@@ -143,6 +183,7 @@ function Formulario() {
           value={formData.country}
           onChange={handleChange}
         />
+        {errores.country && <p className="error">{errores.country}</p>}
       </label>
   
       <label>
@@ -154,6 +195,7 @@ function Formulario() {
           value={formData.city}
           onChange={handleChange}
         />
+        {errores.city && <p className="error">{errores.city}</p>}
       </label>
   
       <label>
@@ -198,7 +240,9 @@ function Formulario() {
           scrollableYearDropdown
         />
       </label>
-  
+      
+      {registering && <p>Cargando...</p>}
+      {registered && <p>El usuario se a creado con exito</p>}
       <button className="submit" type="submit">
         Registrarse
       </button>
@@ -207,6 +251,14 @@ function Formulario() {
       </p>
     </form>
   );  
+  
 }
-
-export default Formulario;
+const mapStateToProps = (state) => {
+  return {
+    // Mapea las partes del estado que necesitas
+    registering: state.login.registering,
+    registered: state.login.registered,
+    error: state.login.error,
+  };
+}
+export default connect(mapStateToProps)(Formulario);
