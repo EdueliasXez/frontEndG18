@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import EventCard from '../Card/Card';
 import styles from './Cards.module.css';
-import { getEvents, filterEventsByCategory } from '../../Redux/actions/events_actions';
+import { getEvents } from '../../Redux/actions/events_actions';
+import LocationFilter from '../SideBar/Filters/LocationFilter'
 import { useDispatch, useSelector } from 'react-redux';
 
 function Cards() {
@@ -10,16 +11,14 @@ function Cards() {
   const loading = useSelector((state) => state.events.loading);
   const error = useSelector((state) => state.events.error);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState([]); // Almacena los eventos filtrados
+  const [filteredData, setFilteredData] = useState([]); 
 
   useEffect(() => {
     dispatch(getEvents());
   }, [dispatch]);
 
-  // Recalcula los eventos filtrados cuando cambie la selección
   useEffect(() => {
     setFilteredData(filteredEvents);
-    // También, al cambiar la selección, volvemos a la página 1
     setCurrentPage(1);
   }, [filteredEvents]);
 
@@ -44,6 +43,7 @@ function Cards() {
 
   return (
     <div className={styles.contGeneral}>
+      <LocationFilter />
       <div className={styles.contenedorCards}>
         {loading ? (
           <div>Cargando eventos...</div>

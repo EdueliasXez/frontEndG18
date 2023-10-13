@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createEvent } from '../../Redux/actions/events_actions'; 
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createEvent } from '../../Redux/actions/events_actions';
+import { getCategories } from '../../Redux/actions/categories_actions';
 import axios from 'axios';
-import './Create.css'
+import './Create.css';
 
 function EventForm() {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ function EventForm() {
     price: 0,
     stock: 0,
     date: '',
-    images: [], 
+    images: [],
     active: true,
     serviceProviderId: '',
     categoryIds: [],
@@ -30,7 +31,19 @@ function EventForm() {
     serviceProviderId: '',
   });
 
-  const [imageFiles, setImageFiles] = useState([]); 
+  const [imageFiles, setImageFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const categoryState = useSelector((state) => state.categories);
+
+  useEffect(() => {
+    // Obtén las categorías al cargar el componente
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Actualiza las categorías cuando cambia el estado
+    setCategories(categoryState.categories);
+  }, [categoryState.categories]);
 
   const handleEventChange = (e) => {
     const { name, value } = e.target;
@@ -48,50 +61,62 @@ function EventForm() {
     });
   };
 
-  const handleImageChange = (e) => {
+  function handleImageChange(e) {
     const files = e.target.files;
-    const imageUrls = [...imageFiles];
-  
+    const newImageFiles = new FormData();
+
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(files[i]);
-        imageUrls.push(imageUrl);
+        newImageFiles.append('images', files[i]);
       }
     }
-  
-    setImageFiles(imageUrls);
+
+    setImageFiles(newImageFiles);
+  }
+
+  const handleCategoryChange = (e) => {
+    // Obtén el valor del ID seleccionado y guárdalo en eventData
+    const selectedCategory = e.target.value;
+    setEventData({
+      ...eventData,
+      categoryIds: [selectedCategory],
+    });
   };
-  
-  const handleSubmit = async (e) => {
+
+  async function handleSubmit(e) {
     e.preventDefault();
-  
+
     try {
-      const data = {
-        images: imageFiles,
-      };
-  
-      const response = await axios.post('/cloudinary/upload', data);
-  
+      const response = await axios.post('/cloudinary/upload', imageFiles);
+
       if (response.status === 200) {
         const imageData = response.data;
-  
-        const imageUrls = imageData.imageUrl;
-  
-        setEventData({
+        const imageUrls = imageData.imageUrls;
+
+        const updatedEventData = {
           ...eventData,
           images: imageUrls,
-        });
-  
-        console.log({ event: eventData, place: placeData });
-        dispatch(createEvent({ event: eventData, place: placeData }));
-      } else {
+          date: eventData.date, // Agrega la fecha al evento
+        };
 
+        const updatedPlaceData = {
+          ...placeData,
+          dateAndTime: {
+            date: eventData.date, // Agrega la fecha al lugar
+            time: placeData.dateAndTime.time,
+          },
+        };
+
+        console.log({ event: updatedEventData, place: updatedPlaceData });
+
+        dispatch(createEvent({ event: updatedEventData, place: updatedPlaceData }));
+      } else {
+        // Maneja el error aquí si es necesario
       }
     } catch (error) {
       console.error(error);
-
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -137,7 +162,7 @@ function EventForm() {
         accept="image/*"
         multiple
         onChange={handleImageChange}
-        name="file"
+        name="images"
       />
       <label>ID del Proveedor de Servicios</label>
       <input
@@ -147,12 +172,18 @@ function EventForm() {
         onChange={handleEventChange}
       />
       <label>Categorías del Evento</label>
-      <input
-        type="text"
+      <select
         name="categoryIds"
-        value={eventData.categoryIds}
-        onChange={handleEventChange}
-      />
+        onChange={handleCategoryChange}
+        value={eventData.categoryIds[0]}
+      >
+        <option value="">Selecciona una categoría</option>
+        {categories.map((category) => (
+          <option key={category._id} value={category._id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
       <label>País del Lugar</label>
       <input
         type="text"

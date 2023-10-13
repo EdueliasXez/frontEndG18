@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ClearIcon from '@mui/icons-material/Clear'; // Importa el icono Clear
+import ClearIcon from '@mui/icons-material/Clear'; 
 import style from "./NavBar.module.css";
 import SidebarCart from "../Cart/Cart";
 import { useAuth0 } from "@auth0/auth0-react";
 import { connect } from 'react-redux';
-import { filterEvents } from '../../Redux/actions/events_actions';
+import { filterEvents, getEvents } from '../../Redux/actions/events_actions';
+
+
+
+
 
 const NavBar = ({ isAuthenticated, filterEvents }) => {
   const [cartVisible, setCartVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
 
+  
   const toggleCart = () => {
     setCartVisible(!cartVisible);
     console.log(localStorage)
