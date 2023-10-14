@@ -137,3 +137,36 @@ export const createEvent = (eventData) => {
       });
   };
 };
+
+export const filterEventsByPriceRange = (priceRange) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const filteredEvents = events.events.filter((event) => {
+      return priceRange[0] <= event.price && event.price <= priceRange[1];
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS_BY_PRICE_RANGE,
+      payload: filteredEvents,
+    });
+  };
+};
+
+export const filterEventsByLocation = (selectedCountry, selectedCity) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const filteredEvents = events.events.filter((event) => {
+      return (
+        (!selectedCountry || event.placeId.country === selectedCountry) &&
+        (!selectedCity || event.placeId.city === selectedCity)
+      );
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS_BY_LOCATION,
+      payload: filteredEvents,
+    });
+  };
+};
