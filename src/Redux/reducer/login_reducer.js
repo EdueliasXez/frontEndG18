@@ -1,5 +1,3 @@
-// authReducer.js
-
 import * as types from '../types/types';
 
 const initialAccessToken = localStorage.getItem('accessToken');
@@ -9,7 +7,9 @@ const initialState = {
   isAuthenticated: !!initialAccessToken, 
   accessToken: initialAccessToken || null,
   refreshToken: initialRefreshToken || null,
-  error: null,
+  registering: false, 
+  registered: false,  
+  error: null,      
 };
 
 const loginReducer = (state = initialState, action) => {
@@ -33,6 +33,27 @@ const loginReducer = (state = initialState, action) => {
         isAuthenticated: false,
         accessToken: null,
         refreshToken: null,
+        error: action.payload,
+      };
+    case types.REGISTRATION_REQUEST:
+      return {
+        ...state,
+        registering: true,
+        registered: false,
+        error: null,
+      };
+    case types.REGISTRATION_SUCCESS:
+      return {
+        ...state,
+        registering: false,
+        registered: true,
+        error: null,
+      };
+    case types.REGISTRATION_FAILURE:
+      return {
+        ...state,
+        registering: false,
+        registered: false,
         error: action.payload,
       };
     case types.LOGOUT:

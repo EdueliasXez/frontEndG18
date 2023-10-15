@@ -37,7 +37,7 @@ export const filterEventsByCategory = (selectedCategories) => {
 
     const filteredEvents = events.events.filter((event) => {
       return (
-        selectedCategories.length === 0 || // Si no se seleccionan categorías, no se aplica filtro
+        selectedCategories.length === 0 || 
         selectedCategories.every((selectedCategory) =>
           event.categories.some((category) => category._id === selectedCategory.value)
         )
@@ -63,7 +63,110 @@ export const getEventDetail = (eventId) => async (dispatch) => {
     console.error('Error al obtener el detalle del evento:', error);
   }
 };
+export const postCreateEvent = (form) => async (dispatch) => {
+  try {
+    const response = await axios.post('/events', form);
+    
+    // Verificar la respuesta del servidor antes de despachar la acción
+    return dispatch({
+      type: actionTypes.POST_CREATE_EVENT,
+      payload: {
+          data: response.data,
+          status: response.status
+          }
+      });
+
+  } catch (error) {
+    console.error('Error creating Event:', error);
+  }
+};
 
 export const cleanDetail = () => ({
   type: actionTypes.CLEAN_EVENT_DETAIL, 
 });
+
+export const filterEvents = (searchText) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const removeAccents = (str) => {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+
+    const normalizedSearchText = removeAccents(searchText.toLowerCase());
+
+    const filteredEvents = events.events.filter((event) => {
+      const eventInfo = removeAccents(Object.values(event).join(" ")).toLowerCase();
+      const keywords = normalizedSearchText.split(" ");
+      return keywords.some((keyword) => eventInfo.includes(` ${keyword} `));
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS,
+      payload: filteredEvents,
+    });
+  };
+};
+
+export const createEventRequest = () => ({
+  type: actionTypes.CREATE_EVENT_REQUEST,
+});
+
+export const createEventSuccess = (event) => ({
+  type: actionTypes.CREATE_EVENT_SUCCESS,
+  payload: event,
+});
+
+export const createEventFailure = (error) => ({
+  type: actionTypes.CREATE_EVENT_FAILURE,
+  payload: error,
+});
+
+export const createEvent = (eventData) => {
+  return (dispatch) => {
+    dispatch(createEventRequest());
+    axios
+      .post('/events/create', eventData)
+      .then((response) => {
+        const createdEvent = response.data;
+        dispatch(createEventSuccess(createdEvent));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(createEventFailure(errorMsg));
+      });
+  };
+};
+
+export const filterEventsByPriceRange = (priceRange) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const filteredEvents = events.events.filter((event) => {
+      return priceRange[0] <= event.price && event.price <= priceRange[1];
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS_BY_PRICE_RANGE,
+      payload: filteredEvents,
+    });
+  };
+};
+
+export const filterEventsByLocation = (selectedCountry, selectedCity) => {
+  return (dispatch, getState) => {
+    const { events } = getState();
+
+    const filteredEvents = events.events.filter((event) => {
+      return (
+        (!selectedCountry || event.placeId.country === selectedCountry) &&
+        (!selectedCity || event.placeId.city === selectedCity)
+      );
+    });
+
+    dispatch({
+      type: actionTypes.FILTER_EVENTS_BY_LOCATION,
+      payload: filteredEvents,
+    });
+  };
+};

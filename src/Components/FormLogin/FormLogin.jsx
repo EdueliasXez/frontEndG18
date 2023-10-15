@@ -7,7 +7,7 @@ import Profile from '../Profile/Profile';
 import LogoutButton from '../Profile/logout';
 import './styles.css';
 
-const FormLogin = ({ login, isAuthenticated }) => { // Obtén isAuthenticated del estado global
+const FormLogin = ({ login, isAuthenticated }) => { 
   const { loginWithRedirect } = useAuth0();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +52,7 @@ const FormLogin = ({ login, isAuthenticated }) => { // Obtén isAuthenticated de
         <div className="signupContainer">
           <ul />
           <p>¿No tienes una cuenta?</p>
-          <a href="/Registro">Registrate</a>
+          <a href="/register">Registrate</a>
           {isAuthenticated ? <LogoutButton /> : <button className="btn" onClick={() => loginWithRedirect()}>Ingresar con Google</button>}
           <Profile />
         </div>

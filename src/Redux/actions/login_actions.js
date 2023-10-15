@@ -1,5 +1,3 @@
-
-
 import axios from 'axios';
 import * as types from '../types/types';
 
@@ -38,4 +36,35 @@ export const login = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch(loginFailure(error.response.data.error));
   }
+};
+
+export const registrationRequest = () => ({
+  type: types.REGISTRATION_REQUEST,
+});
+
+export const registrationSuccess = () => ({
+  type: types.REGISTRATION_SUCCESS,
+});
+
+export const registrationFailure = (error) => ({
+  type: types.REGISTRATION_FAILURE,
+  payload: error,
+});
+
+export const registerUser = (userData) => {
+  return (dispatch) => {
+    dispatch(registrationRequest());
+
+    // Devolver la promesa directamente
+    return axios
+      .post('user/register', userData)
+      .then(() => {
+        dispatch(registrationSuccess());
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(registrationFailure(errorMsg));
+        return Promise.reject(error);
+      });
+  };
 };

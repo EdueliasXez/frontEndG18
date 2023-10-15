@@ -7,6 +7,15 @@ import FormLogin from './Components/FormLogin/FormLogin';
 import About from "./Views/About/About";
 import Checkout from './Components/Checkout/Checkout';
 import Profile from './Components/Profile/Profile';
+import SucessPage from './Components/Checkout/Estados/Sucess'
+import CancelPage from './Components/Checkout/Estados/Cancel'
+import Formulario from './Components/Form/Formulario';
+import QRCodeGenerator from "./Components/TicketCode/QRCodeGenerator";
+import Dashboard from "./Views/Admin/Dashboard/Dashboard";
+import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
+import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsuariosAdmin";
+import EventForm from "./Views/CreateIsProvider/Create"
+
 
 function App() {
   return (
@@ -18,8 +27,16 @@ function App() {
           <Route path="/detail/:id" element={<EventDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<FormLogin />} />
+          <Route path="/register" element={<Formulario />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About/>} />
+          <Route path="/checkout/success" element={<SucessPage/>} />
+          <Route path="/checkout/cancel" element={<CancelPage />} />
+          <Route path="/QRCodeGenerator" element={<QRCodeGenerator/>} />
+          <Route path="/admin" element={<Dashboard/>} />
+          <Route path="/admin/events" element={<EventAdmin/>} />
+          <Route path="/admin/users" element={<UsuariosAdmin/>} />
+          <Route path="/profile/createEvent" element={<EventForm/>} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -27,4 +44,3 @@ function App() {
 }
 
 export default App;
-
