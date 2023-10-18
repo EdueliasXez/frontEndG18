@@ -12,6 +12,7 @@ function Cards() {
   const error = useSelector((state) => state.events.error);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]); 
+  const noEvents = filteredData.length === 0; 
 
   useEffect(() => {
     dispatch(getEvents());
@@ -49,6 +50,8 @@ function Cards() {
           <div>Cargando eventos...</div>
         ) : error ? (
           <div>Error: {error}</div>
+        ) : noEvents ? ( // Mostrar aviso cuando no hay eventos
+          <div>No hay eventos con estas especificaciones.</div>
         ) : eventsToShow.map((event, index) => (
           <EventCard key={index} event={event} />
         ))}

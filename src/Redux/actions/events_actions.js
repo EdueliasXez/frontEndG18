@@ -67,7 +67,6 @@ export const postCreateEvent = (form) => async (dispatch) => {
   try {
     const response = await axios.post('/events', form);
     
-    // Verificar la respuesta del servidor antes de despachar la acción
     return dispatch({
       type: actionTypes.POST_CREATE_EVENT,
       payload: {
@@ -170,3 +169,35 @@ export const filterEventsByLocation = (selectedCountry, selectedCity) => {
     });
   };
 };
+
+export const getTicketsRequest = () => ({
+  type: actionTypes.GET_TICKETS_REQUEST, 
+});
+
+export const getTicketsSuccess = (tickets) => ({
+  type: actionTypes.GET_TICKETS_SUCCESS, 
+  payload: tickets,
+});
+
+export const getTicketsFailure = (error) => ({
+  type: actionTypes.GET_TICKETS_FAILURE, 
+  payload: error,
+});
+
+
+export const getTicketsByUserId = (userId) => {
+  return (dispatch) => {
+    dispatch(getTicketsRequest()); 
+    axios
+      .get(`/user/tickets/${userId}`)
+      .then((response) => {
+        const tickets = response.data;
+        dispatch(getTicketsSuccess(tickets)); 
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(getTicketsFailure(errorMsg)); 
+      });
+  };
+};
+
