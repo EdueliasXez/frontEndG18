@@ -16,6 +16,7 @@ const CustomCard = ({ event, addToCart }) => {
 
   const [expanded, setExpanded] = useState(false);
   const [showAddedToCart, setShowAddedToCart] = useState(false);
+ 
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -26,7 +27,7 @@ const CustomCard = ({ event, addToCart }) => {
   const handleAddToCart = () => {
     const eventWithImages = {
       ...event,
-      images: event.images, 
+      images: event.images,
     };
     addToCart(eventWithImages);
     setShowAddedToCart(true);
@@ -45,11 +46,12 @@ const CustomCard = ({ event, addToCart }) => {
           </NavLink>
         </Typography>
         <div className={style.cardImageContainer}>
-        <img
-            src={event.images[0]}
+          <img
+            src={event.images[0]} 
             alt={event.title}
             className={style.cardImage}
-            />
+            loading="lazy"
+          />
         </div>
         <Typography variant="body2" color="text.secondary">
           ${event.price}
@@ -87,7 +89,6 @@ const CustomCard = ({ event, addToCart }) => {
     </Card>
   );
 }
-
 
 const mapDispatchToProps = {
   addToCart,
