@@ -151,4 +151,18 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .agotado-message {
+    text-align: center;
+    font-size: 24px;
+    color: #ff0000;
+    margin: 20px 0;
+  }
   
