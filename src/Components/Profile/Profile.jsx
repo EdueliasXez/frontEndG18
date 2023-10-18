@@ -51,6 +51,10 @@ const Profile = ({ isAuthenticated, logout }) => {
           <Link to="/home"> 
             <button className={styles["home-button"]}>Volver al Inicio</button>
           </Link>
+
+          <Link to="/user/Useredit">
+            <button> Editar Usuario </button>
+          </Link>
         </div>
       )}
     </div>

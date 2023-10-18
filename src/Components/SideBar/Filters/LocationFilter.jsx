@@ -19,22 +19,28 @@ const LocationFilter = ({ eventLocations, filterEventsByLocation }) => {
   return (
     <div>
       <h3>Filtrar por localización</h3>
-      <select value={selectedCountry} onChange={handleCountryChange}>
-        <option value="">Todos los países</option>
-        {eventLocations.countries.map((country) => (
-          <option key={country} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-      <select value={selectedCity} onChange={handleCityChange}>
-        <option value="">Todas las ciudades</option>
-        {eventLocations.cities.map((city) => (
-          <option key={city} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
+      {eventLocations ? (
+      <div>
+        <select value={selectedCountry} onChange={handleCountryChange}>
+          <option value="">Todos los países</option>
+          {eventLocations.countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+        <select value={selectedCity} onChange={handleCityChange}>
+          <option value="">Todas las ciudades</option>
+          {eventLocations.cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+      </div>
+    ) : (
+      <p>Cargando datos...</p>
+    )}
     </div>
   );
 };
