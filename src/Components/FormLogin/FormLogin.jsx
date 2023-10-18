@@ -2,13 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../Redux/actions/login_actions'; 
 import { Link } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+import { GoogleLogin } from 'react-google-login';
 import Profile from '../Profile/Profile';
 import LogoutButton from '../Profile/logout';
 import './styles.css';
 
 const FormLogin = ({ login, isAuthenticated }) => { 
-  const { loginWithRedirect } = useAuth0();
+  const responseGoogle = (response) => {
+    if (response.profileObj) {
+      const userData = response.profileObj;
+  
+      // Realiza una solicitud al servidor para verificar si el usuario ya está registrado
+      fetch('/api/checkIfRegistered', {
+        method: 'POST',
+        body: JSON.stringify({ email: userData.email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.isRegistered) {
+            // Usuario ya registrado, continuar con la autenticación
+            // Envía el token de acceso a tu servidor para autenticación
+          } else {
+            // Usuario no registrado, redirige a la página de registro
+            History.push('/registro');
+          }
+        });
+    }
+  };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -53,7 +76,14 @@ const FormLogin = ({ login, isAuthenticated }) => {
           <ul />
           <p>¿No tienes una cuenta?</p>
           <a href="/register">Registrate</a>
-          {isAuthenticated ? <LogoutButton /> : <button className="btn" onClick={() => loginWithRedirect()}>Ingresar con Google</button>}
+
+          {isAuthenticated ? <LogoutButton /> : <GoogleLogin
+        clientId="TU_ID_DE_CLIENTE_DE_GOOGLE"
+        buttonText="Iniciar sesión con Google"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+      />}
           <Profile />
         </div>
       </form>
