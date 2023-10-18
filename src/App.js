@@ -14,7 +14,7 @@ import QRCodeGenerator from "./Components/TicketCode/QRCodeGenerator";
 import Dashboard from "./Views/Admin/Dashboard/Dashboard";
 import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
 import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsuariosAdmin";
-import EventForm from "./Views/CreateIsProvider/Create"
+import EventForm from "./Views/CreateIsProvider/create"
 
 
 function App() {
