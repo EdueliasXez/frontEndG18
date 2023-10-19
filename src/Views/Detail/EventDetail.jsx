@@ -18,14 +18,21 @@ import {
   AttachMoney as AttachMoneyIcon,
   Event as EventIcon,
   Category as CategoryIcon,
+  CheckCircle as CheckCircleIcon, 
+  Block as BlockIcon, 
 } from "@mui/icons-material";
 import style from "./EventDetail.module.css";
 import { getEventDetail, cleanDetail } from "../../Redux/actions/events_actions";
+import { handleActiveEvent } from "../../Redux/actions/softDelete_actions"; 
+import ReviewsComponent from "../../Components/Reviews/Reviews";
+import { getUserProfileFromToken } from "../../Redux/actions/auth_actions"; 
 
 const EventDetail = () => {
   const { id } = useParams();
   const event = useSelector((state) => state.events.eventDetail);
   const [isLoading, setIsLoading] = useState(true);
+  const [eventActive, setEventActive] = useState(false); 
+  const [isAdmin, setIsAdmin] = useState(false); 
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,9 +45,22 @@ const EventDetail = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
+      if (event) {
+        setEventActive(event.active);
+      }
     }, 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [event]);
+
+  const checkIfAdmin = () => {
+    getUserProfileFromToken()
+      .then((data) => {
+        setIsAdmin(data.isAdmin); 
+      })
+      .catch((error) => {
+        console.error("Error al obtener los datos del usuario:", error);
+      });
+  };
 
   return (
     <>
@@ -73,7 +93,11 @@ const EventDetail = () => {
               <Typography variant="body1">{event.summary}</Typography>
             </div>
             <Typography variant="h6" gutterBottom>
-              <AttachMoneyIcon />
+              {eventActive ? ( 
+                <CheckCircleIcon color="success" /> 
+              ) : (
+                <BlockIcon color="error" /> 
+              )}
               Precio boleta: ${event.price}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -98,6 +122,28 @@ const EventDetail = () => {
                 </ListItem>
               ))}
             </List>
+            {eventActive && isAdmin && ( 
+              <Button
+                onClick={() => {
+                  handleActiveEvent(event._id, false); 
+                  setEventActive(false); 
+                }}
+              >
+                Desactivar Evento
+              </Button>
+            )}
+            {!eventActive && isAdmin && ( 
+              <Button
+                onClick={() => {
+                  handleActiveEvent(event._id, true); 
+                  setEventActive(true); 
+                }}
+              >
+                Activar Evento
+              </Button>
+            )}
+            {checkIfAdmin()} 
+            <ReviewsComponent reviewedItemId={event._id} reviewedItemType="event" />
           </Paper>
         </Container>
       )}

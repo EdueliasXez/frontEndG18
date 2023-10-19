@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux'; // Importa connect
+import { connect } from 'react-redux'; 
 import { addToCart } from '../../Redux/actions/cart_actions'; 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';

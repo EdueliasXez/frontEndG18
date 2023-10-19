@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getUserProfileFromToken } from "../../Redux/actions/auth_actions";
+import { getTicketsByUserId } from "../../Redux/actions/events_actions";
 import { logout } from "../../Redux/actions/login_actions";
 import { Link } from "react-router-dom";
-import styles from "./Profile.module.css"; 
+import styles from "./Profile.module.css";
 
-const Profile = ({ isAuthenticated, logout }) => {
+const Profile = ({ isAuthenticated, logout, getTicketsByUserId }) => {
   const [userData, setUserData] = useState(null);
+  const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     if (isAuthenticated) {
       getUserProfileFromToken()
         .then((data) => {
           setUserData(data);
+          getTicketsByUserId(data._id)
+            .then((tickets) => {
+              setTickets(tickets);
+              console.log('desde profile', tickets);
+            })
+            .catch((error) => {
+              console.error("Error al obtener los tickets:", error);
+            });
         })
         .catch((error) => {
           console.error("Error al obtener los datos del usuario:", error);
         });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, getTicketsByUserId]);
 
   const handleLogout = () => {
     logout();
@@ -38,6 +48,16 @@ const Profile = ({ isAuthenticated, logout }) => {
             <p><strong>País:</strong> {userData.country}</p>
             <p><strong>Ciudad:</strong> {userData.city}</p>
             <p><strong>¿Es proveedor de servicios?</strong> {userData.isServiceProvider ? "Sí" : "No"}</p>
+          </div>
+          <div className={styles["tickets-container"]}>
+            <h3>Mis tickets</h3>
+            {tickets.map((ticket) => (
+              <li key={ticket._id}>
+                <p>{ticket.eventName}</p>
+                <p>Fecha del evento {ticket.date}</p>
+                <p>Precio: {ticket.price}</p>
+              </li>
+            ))}
           </div>
         </div>
       ) : (
@@ -64,6 +84,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   logout,
+  getTicketsByUserId,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

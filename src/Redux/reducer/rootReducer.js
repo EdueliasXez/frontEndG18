@@ -1,18 +1,21 @@
 import { combineReducers } from 'redux';
 
 
-// import userReducer from './userReducer';
 import eventReducer from './events_reducer';
 import categoryReducer from './categories_reducer';
 import loginReducer from './login_reducer';
 import cartReducer from './cart_reducer'
+import reviewReducer from './reviews_reducer'
+import authReducer from './auth_reducer'
 
 const rootReducer = combineReducers({
 //   user: userReducer,
 events: eventReducer,
 categories: categoryReducer,
 cart: cartReducer,
-login: loginReducer
+login: loginReducer,
+reviews: reviewReducer,
+auth: authReducer,
 });
 
 export default rootReducer;
