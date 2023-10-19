@@ -46,7 +46,7 @@ function App() {
           <Route path="/admin/users" element={<UsuariosAdmin/>} />
           <Route path="/admin/Create" element={<CreateIsProvider/>} />
           <Route path="/admin/tickets" element={<TicketsAdmin/>} />
-          <Route path="/profile/:idUser" element={<ProfileViewer />} />
+         // <Route path="/profile/:idUser" element={<ProfileViewer />} />
           <Route path="/editUser/:userId" element={<UserEdit />} />
           <Route path="/admin/servi" element={<ServiceProfile/>}/>
           <Route path ="/put/:id" element={<EventDet/>}/>
