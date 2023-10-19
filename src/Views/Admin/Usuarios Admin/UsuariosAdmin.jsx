@@ -1,5 +1,5 @@
 import Datagrid from "./datagrid/datagrid"
-
+// import UserEdit from "./EditUser/UserEdit"
 import style from "./UsuariosAdmin.module.css"
 
 function UsuariosAdmin () {
@@ -12,6 +12,7 @@ function UsuariosAdmin () {
             <div className={style.table}>
                 <Datagrid/>
             </div>
+           
         </div>
     )
 }
