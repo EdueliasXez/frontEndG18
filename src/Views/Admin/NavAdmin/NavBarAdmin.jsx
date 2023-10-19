@@ -12,12 +12,16 @@ function NavBarAdmin () {
                     <span className={styles.itemTitle} >INICIO</span>
                 </Link>
 
-                <Link to="/admin/usuarios" className={styles.listItem}>
+                <Link to="/admin/users" className={styles.listItem}>
                     <span className={styles.itemTitle}>Usuarios</span>
                     
                 </Link>
-                <Link to="/admin/eventos" className={styles.listItem}>
+                <Link to="/admin/events" className={styles.listItem}>
                     <span className={styles.itemTitle} >Eventos</span>
+                </Link>
+
+                <Link to="/admin/tickets" className={styles.listItem}>
+                    <span className={styles.itemTitle} >Boleteria Comprados</span>
                 </Link>
                
             </div>

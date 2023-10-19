@@ -7,11 +7,12 @@ function Datagrid () {
     const [datos, setDatos]=useState([])
     const [paginaActual, setPaginaActual] = useState(1);
     const [elementosPorPagina] = useState(10);
+    
 
     useEffect(()=>{
         const obtenerDatos = async () => {
             try {
-                const response = await axios.get('/users');
+                const response = await axios.get('/user');
                 setDatos(response.data);
               } catch (error) {
                 console.error('Error al obtener los datos:', error);
@@ -55,50 +56,37 @@ function Datagrid () {
     };
 
 
-    const desactivarHandler = async(id, isActive) =>{
-      try {
-          if(isActive === true){
-            // eslint-disable-next-line
-              const response = await axios.put(`/users/${id}`, {isActive: false})
-          }else{
-            // eslint-disable-next-line
-              const response = await axios.put(`/users/${id}`, {isActive: true})
-      }
-      window.location.reload() // revisar
-  }catch (error) {
-      console.log(error)
-      }
-  }
-
+   
     return(
       <div className={styles.usuarios}>
         <table className={styles.tabla}>
           <thead className={styles.columnas}>
             <tr>
-              <th>Avatar</th>
               <th>Nombre</th>
               <th>Apellido</th>
               <th>Email</th>
               <th>Estado</th>
-              <th>Creado</th> 
-              <th>Rol</th> 
+              <th>Es Administrador</th> 
               <th>Acción</th>
+              <th>País</th>
+              <th>Ciudad</th>
             </tr></thead>
           <tbody className={styles.filas}>
             {elementosPaginaActual.map((dato) => (
+            
               <tr key={dato.id}>
-                <td><img className={styles.avatarimg} src={dato.avatar_img} alt={dato.first_name}></img></td>
-                <td>{dato.first_name}</td>
-                <td>{dato.last_name}</td>
+                <td>{dato.firstName}</td>
+                <td>{dato.lastName}</td>
                 <td>{dato.email}</td>
-                <td>{dato.isActive===true?(<p>Activo</p>):(<p>Desactivado</p>)}</td>
-                <td>{dato.createdAt}</td>
-                <td>{dato.admin===true?(<p>Administrador</p>):(<p>Usuario</p>)}</td>
-                <td>
-                  {/* <button>Editar</button> */}
-                  {dato.isActive===true?<button onClick={()=>desactivarHandler(dato.id, dato.isActive)}>Bloquear</button>:<button onClick={()=>desactivarHandler(dato.id, dato.isActive)}>Desbloquear</button>}
-                </td>
-              </tr>
+                <td>{dato.isAdmin ? <p>Activo</p> : <p>Desactivado</p>}</td>
+                <td>{dato.admin ? <p>Administrador</p> : <p>Usuario</p>}</td>
+                <td>{dato.accion ? dato.accion : "No disponible"}</td>
+                <td>{dato.country ? dato.country : "No disponible"}</td>
+                <td>{dato.city ? dato.city : "No disponible"}</td>
+
+
+              <td></td>
+                </tr>
             ))}
           </tbody>         
         </table>
@@ -108,7 +96,7 @@ function Datagrid () {
           {paginaActual < Math.ceil(datos.length/elementosPorPagina)&&(<button onClick={irPaginaSiguiente}>&gt;</button>)}
         </div>
       </div>
-    )
+    );
 }
 
-export default Datagrid
+export default Datagrid;

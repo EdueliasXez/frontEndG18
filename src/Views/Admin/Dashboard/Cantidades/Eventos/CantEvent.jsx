@@ -10,7 +10,7 @@ const CantEvent=()=>{
     useEffect(() => {
       const datos =async ()=>{
         try {
-          const response = await axios.get("/eventos")
+          const response = await axios.get('/events')
           const categories = response.data.reduce((acc,item) =>{
             if(acc[item.category]){
               acc[item.category] ++

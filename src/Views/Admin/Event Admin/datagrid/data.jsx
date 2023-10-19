@@ -12,7 +12,7 @@ function DataEvents () {
     useEffect(()=>{
         const obtenerDatos = async () => {
             try {
-                const response = await axios.get('/eventos');
+                const response = await axios.get('/event');
                 setDatos(response.data);
               } catch (error) {
                 console.error('Error al obtener los datos:', error);
@@ -62,7 +62,7 @@ function DataEvents () {
     const saveHandler = async(id)=>{
         try {
             // eslint-disable-next-line
-            const response = await axios.put(`/eventos/${id}`, editedEvent);
+            // const response = await axios.put(`('/:id'${id}`, editedEvent);
             seteditingEventId(null);
             window.location.reload();
         } catch (error) {
@@ -70,20 +70,7 @@ function DataEvents () {
         }
     }
     
-    const desactivarHandler = async(id, isActive) =>{
-        try {
-            if(isActive === true){
-                // eslint-disable-next-line
-                const response = await axios.put(`/eventos/${id}`, {isActive: false})
-            }else{
-                // eslint-disable-next-line
-                const response = await axios.put(`/eventos/${id}`, {isActive: true})
-        }
-        window.location.reload()
-    }catch (error) {
-        console.log(error)
-        }
-    }
+   
 
     return(
         <div className={styles.eventos}>
@@ -149,7 +136,7 @@ function DataEvents () {
                 ) : (
                 <button onClick={() => editHandler(dato.id)} className= {styles.buttonE}>Editar</button>
                 )}
-                {dato.isActive ===true? <button onClick={() => desactivarHandler(dato.id, dato.isActive)} className= {styles.buttonD}>Deshabilitar</button> : <button onClick={() => desactivarHandler(dato.id, dato.isActive)} className= {styles.buttonD}>Habilitar</button>}
+               
               </td>
             </tr>
           ))}
