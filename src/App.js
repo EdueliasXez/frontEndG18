@@ -13,9 +13,11 @@ import Formulario from './Components/Form/Formulario';
 import QRCodeGenerator from "./Components/TicketCode/QRCodeGenerator";
 import Dashboard from "./Views/Admin/Dashboard/Dashboard";
 import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
+import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsuariosAdmin";
+import EventForm from "./Views/CreateIsProvider/create"
 import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsersAdmin";
 import WishlistEvents from "./Views/WishlistEvents/WishlistEvents";
-import CreateIsProvider from "./Views/CreateIsProvider/Create";
+import CreateIsProvider from "./Views/CreateIsProvider/create";
 import TicketsAdmin from "./Views/Admin/Dashboard/Cantidades/Tickets/CantTickets"
 import UserEdit from './Components/Profile/EditProfile/EditProfile'
 

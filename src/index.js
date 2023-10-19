@@ -8,7 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react'; // Importa Persis
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'https://clickyticket.onrender.com';
 
 ReactDOM.render(
   <Provider store={store}> 

@@ -2,36 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../Redux/actions/login_actions'; 
 import { Link } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import Profile from '../Profile/Profile';
 import LogoutButton from '../Profile/logout';
 import './styles.css';
 
 const FormLogin = ({ login, isAuthenticated }) => { 
-  const responseGoogle = (response) => {
-    if (response.profileObj) {
-      const userData = response.profileObj;
-  
-      // Realiza una solicitud al servidor para verificar si el usuario ya está registrado
-      fetch('/api/checkIfRegistered', {
-        method: 'POST',
-        body: JSON.stringify({ email: userData.email }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.isRegistered) {
-            // Usuario ya registrado, continuar con la autenticación
-            // Envía el token de acceso a tu servidor para autenticación
-          } else {
-            // Usuario no registrado, redirige a la página de registro
-            History.push('/registro');
-          }
-        });
-    }
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+ 
+  const handleGoogleLoginSuccess = (response) => {
+    setIsLoggedIn(true);
+    setUserData(response.profile);
   };
+
+  const handleGoogleLogoutSuccess = () => {
+    setIsLoggedIn(false);
+    setUserData(null);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+     // Aquí puedes agregar el código para manejar el envío del formulario
+  };
+
+  const onFailure = (error) => {
+    console.log(error);
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -51,8 +49,9 @@ const FormLogin = ({ login, isAuthenticated }) => {
     } catch (error) {
       console.error('Error en el inicio de sesión:', error);
     }
+    
   };
-
+  
   return (
     <div>
       <form className="form_main" action="" onSubmit={handleLoginOrRegister}>
@@ -77,13 +76,30 @@ const FormLogin = ({ login, isAuthenticated }) => {
           <p>¿No tienes una cuenta?</p>
           <a href="/register">Registrate</a>
 
-          {isAuthenticated ? <LogoutButton /> : <GoogleLogin
-        clientId="TU_ID_DE_CLIENTE_DE_GOOGLE"
-        buttonText="Iniciar sesión con Google"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-      />}
+          {isAuthenticated ? <LogoutButton /> : <div>
+          
+        <div>
+          <GoogleOAuthProvider clientId="248754851549-dbdgrvlmkeg0gd1ei2670mq7gfbhrv7t.apps.googleusercontent.com">
+            {isLoggedIn ? (
+              <div>
+                <Profile userData={userData} />
+                <LogoutButton onLogoutSuccess={handleGoogleLogoutSuccess} />
+              </div>
+            ) : (
+              <GoogleLogin
+                clientId="248754851549-dbdgrvlmkeg0gd1ei2670mq7gfbhrv7t.apps.googleusercontent.com"
+                buttonText="Iniciar sesión con Google"
+                onSuccess={handleGoogleLoginSuccess}
+                onFailure={() => {}}
+                cookiePolicy={'single_host_origin'}
+                responseType="code,token"
+              />
+            )}
+          </GoogleOAuthProvider>
+        </div>
+      
+    </div>
+  }
           <Profile />
         </div>
       </form>
@@ -92,8 +108,11 @@ const FormLogin = ({ login, isAuthenticated }) => {
   );
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.login.isAuthenticated,
-});
+  
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.login.isAuthenticated,
+  };
+}
 
 export default connect(mapStateToProps, { login })(FormLogin);
