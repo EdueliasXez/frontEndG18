@@ -89,6 +89,11 @@ const Profile = ({ isAuthenticated, logout, getTicketsByUserId }) => {
               <button className={styles["create-event-button"]}>Crear Evento</button>
             </Link>
           )}
+          {userData && userData.isAdmin && (
+            <Link to="/admin">
+              <button className={styles["admin-button"]}>Ir al Panel de Administrador</button>
+            </Link>
+          )}
         </div>
       )}
     </div>

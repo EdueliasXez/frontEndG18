@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 import styles from './datagrid.module.css'
@@ -78,9 +79,11 @@ function Datagrid () {
                 <td>{dato.firstName}</td>
                 <td>{dato.lastName}</td>
                 <td>{dato.email}</td>
-                <td>{dato.isAdmin ? <p>Activo</p> : <p>Desactivado</p>}</td>
-                <td>{dato.admin ? <p>Administrador</p> : <p>Usuario</p>}</td>
-                <td>{dato.accion ? dato.accion : "No disponible"}</td>
+                <td>{dato.active ? <p>Desactivado</p> : <p>Activo</p>}</td>
+                <td>{dato.isAdmin ? <p>Administrador</p> : <p>Usuario</p>}</td>
+                <td>
+  <Link to={`/profile/${dato._id}`}>Ver Perfil</Link>
+</td>
                 <td>{dato.country ? dato.country : "No disponible"}</td>
                 <td>{dato.city ? dato.city : "No disponible"}</td>
 

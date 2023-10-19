@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import CustomCard from '../Card/Card';
 import styles from './Cards.module.css';
 import { getEvents } from '../../Redux/actions/events_actions';
-import LocationFilter from '../SideBar/Filters/LocationFilter'
+import LocationFilter from '../SideBar/Filters/LocationFilter';
 import { useDispatch, useSelector } from 'react-redux';
-
 
 function Cards() {
   const dispatch = useDispatch();
@@ -12,8 +11,8 @@ function Cards() {
   const loading = useSelector((state) => state.events.loading);
   const error = useSelector((state) => state.events.error);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState([]); 
-  const noEvents = filteredData.length === 0; 
+  const [filteredData, setFilteredData] = useState([]);
+  const noEvents = filteredData.length === 0;
 
   useEffect(() => {
     dispatch(getEvents());
@@ -28,8 +27,10 @@ function Cards() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const eventsToShow = loading ? [] : error ? [] : filteredData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  // Filtra eventos que están activos
+  const activeEvents = filteredData.filter((event) => event.active);
+
+  const totalPages = Math.ceil(activeEvents.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -51,9 +52,9 @@ function Cards() {
           <div>Cargando eventos...</div>
         ) : error ? (
           <div>Error: {error}</div>
-        ) : noEvents ? ( // Mostrar aviso cuando no hay eventos
+        ) : noEvents ? (
           <div>No hay eventos con estas especificaciones.</div>
-        ) : eventsToShow.map((event, index) => (
+        ) : activeEvents.slice(startIndex, endIndex).map((event, index) => (
           <CustomCard key={index} event={event} />
         ))}
       </div>

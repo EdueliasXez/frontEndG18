@@ -16,22 +16,22 @@ import {
   AttachMoney as AttachMoneyIcon,
   Event as EventIcon,
   Category as CategoryIcon,
-  CheckCircle as CheckCircleIcon, 
-  Block as BlockIcon, 
+  CheckCircle as CheckCircleIcon,
+  Block as BlockIcon,
 } from "@mui/icons-material";
 import style from "./EventDetail.module.css";
 import { Button } from "@mui/material";
 import { getEventDetail, cleanDetail } from "../../Redux/actions/events_actions";
-import { handleActiveEvent } from "../../Redux/actions/softDelete_actions"; 
+import { handleActiveEvent } from "../../Redux/actions/softDelete_actions";
 import ReviewsComponent from "../../Components/Reviews/Reviews";
-import { getUserProfileFromToken } from "../../Redux/actions/auth_actions"; 
+import { getUserProfileFromToken } from "../../Redux/actions/auth_actions";
 
 const EventDetail = () => {
   const { id } = useParams();
   const event = useSelector((state) => state.events.eventDetail);
   const [isLoading, setIsLoading] = useState(true);
-  const [eventActive, setEventActive] = useState(false); 
-  const [isAdmin, setIsAdmin] = useState(false); 
+  const [eventActive, setEventActive] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,19 +51,21 @@ const EventDetail = () => {
     return () => clearTimeout(timer);
   }, [event]);
 
-  const checkIfAdmin = () => {
-    getUserProfileFromToken()
-      .then((data) => {
-        setIsAdmin(data.isAdmin); 
-      })
-      .catch((error) => {
-        console.error("Error al obtener los datos del usuario:", error);
-      });
-  };
+  useEffect(() => {
+    const checkIfAdmin = () => {
+      getUserProfileFromToken()
+        .then((data) => {
+          setIsAdmin(data.isAdmin);
+        })
+        .catch((error) => {
+          console.error("Error al obtener los datos del usuario:", error);
+        });
+    };
 
-  // Verificar si hay stock disponible
+    checkIfAdmin();
+  }, []);
+
   const isSoldOut = event ? event.stock <= 0 : true;
-
 
   return (
     <>
@@ -80,14 +82,12 @@ const EventDetail = () => {
             <Typography variant="h4" component="div" gutterBottom>
               {event.title}
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              <ListItemIcon>
-                <LocationOnIcon />
-              </ListItemIcon>
-              Lugar: {event.placeId.direction}, {event.placeId.city},{" "}
-              {event.placeId.country}
-            </Typography>
-            {/* Mostrar imagen solo si hay stock */}
+            {(eventActive === false && isAdmin) && (
+              <Typography variant="body1">El evento no está disponible</Typography>
+            )}
+            {(!eventActive && !isAdmin) && (
+              <Typography variant="body1">El evento no está disponible</Typography>
+            )}
             {!isSoldOut && (
               <img src={event.images[0]} alt={event.title} className={style.image} />
             )}
@@ -99,15 +99,14 @@ const EventDetail = () => {
               <Typography variant="body1">{event.summary}</Typography>
             </div>
             <Typography variant="h6" gutterBottom>
-              {eventActive ? ( 
-                <CheckCircleIcon color="success" /> 
+              {(eventActive) ? (
+                <CheckCircleIcon color="success" />
               ) : (
-                <BlockIcon color="error" /> 
+                <BlockIcon color="error" />
               )}
               Precio boleta: ${event.price}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {/* Mostrar disponibilidad de boletas solo si no está agotado */}
               {isSoldOut ? "Agotado" : `Boletas disponibles: ${event.stock}`}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -129,27 +128,26 @@ const EventDetail = () => {
                 </ListItem>
               ))}
             </List>
-            {eventActive && isAdmin && ( 
+            {eventActive && isAdmin && (
               <Button
                 onClick={() => {
-                  handleActiveEvent(event._id, false); 
-                  setEventActive(false); 
+                  handleActiveEvent(event._id, false);
+                  setEventActive(false);
                 }}
               >
                 Desactivar Evento
               </Button>
             )}
-            {!eventActive && isAdmin && ( 
+            {!eventActive && isAdmin && (
               <Button
                 onClick={() => {
-                  handleActiveEvent(event._id, true); 
-                  setEventActive(true); 
+                  handleActiveEvent(event._id, true);
+                  setEventActive(true);
                 }}
               >
                 Activar Evento
               </Button>
             )}
-            {checkIfAdmin()} 
             <ReviewsComponent reviewedItemId={event._id} reviewedItemType="event" />
           </Paper>
         </Container>
@@ -159,5 +157,3 @@ const EventDetail = () => {
 };
 
 export default EventDetail;
-
-
