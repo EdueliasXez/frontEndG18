@@ -137,3 +137,34 @@ export const createEvent = (eventData) => {
       });
   };
 };
+
+export const updateEventRequest = () => ({
+  type: actionTypes.UPDATE_EVENT_REQUEST,
+});
+
+export const updateEventSuccess = (updatedEvent) => ({
+  type: actionTypes.UPDATE_EVENT_SUCCESS,
+  payload: updatedEvent,
+});
+
+export const updateEventFailure = (error) => ({
+  type: actionTypes.UPDATE_EVENT_FAILURE,
+  payload: error,
+});
+
+
+export const updateEvent = (eventId, updatedEventData) => {
+  return (dispatch) => {
+    dispatch(updateEventRequest());
+    axios
+      .put(`/events/${eventId}`, { event: updatedEventData }) // Envia los datos en un objeto "event"
+      .then((response) => {
+        const updatedEvent = response.data;
+        dispatch(updateEventSuccess(updatedEvent));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(updateEventFailure(errorMsg));
+      });
+  };
+};
