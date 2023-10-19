@@ -55,7 +55,6 @@ export const registerUser = (userData) => {
   return (dispatch) => {
     dispatch(registrationRequest());
 
-    // Devolver la promesa directamente
     return axios
       .post('user/register', userData)
       .then(() => {

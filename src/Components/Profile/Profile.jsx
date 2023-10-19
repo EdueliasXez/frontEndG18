@@ -72,10 +72,14 @@ const Profile = ({ isAuthenticated, logout, getTicketsByUserId }) => {
           <Link to="/home"> 
             <button className={styles["home-button"]}>Volver al Inicio</button>
           </Link>
+          {userData ? (
+  <Link to={`/editUser/${userData._id}`}>
+    <button>Editar Usuario</button>
+  </Link>
+) : (
+  <p>Cargando datos del usuario...</p>
+)}
 
-          <Link to="/user/Useredit">
-            <button> Editar Usuario </button>
-          </Link>
         </div>
       )}
     </div>
