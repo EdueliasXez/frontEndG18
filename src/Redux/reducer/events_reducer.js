@@ -12,6 +12,7 @@ const initialState = {
     cities: [],
   },
   tickets: [], 
+  
 };
 
 
@@ -51,6 +52,11 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         filteredEvents: action.payload,
       };
+      case actionTypes.GET_SERVICEPROVIDER:
+        return {
+          ...state,
+          filteredEvents: action.payload,
+        };
     case actionTypes.FILTER_EVENTS:
       return {
         ...state,

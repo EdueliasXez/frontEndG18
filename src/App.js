@@ -19,6 +19,8 @@ import CreateIsProvider from "./Views/CreateIsProvider/Create";
 import TicketsAdmin from "./Views/Admin/Dashboard/Cantidades/Tickets/CantTickets"
 import UserEdit from './Components/Profile/EditProfile/EditProfile'
 
+import ServiceProfile from './Views/ServiceProvider/Service';
+import EventDet from './Views/PutEvent/PutEvent';
 
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
           <Route path="/admin/tickets" element={<TicketsAdmin/>} />
           <Route path="/profile/:idUser" element={<ProfileViewer />} />
           <Route path="/editUser/:userId" element={<UserEdit />} />
+          <Route path="/admin/servi" element={<ServiceProfile/>}/>
+          <Route path ="/put/:id" element={<EventDet/>}/>
         </Routes>
       </BrowserRouter>
     </div>

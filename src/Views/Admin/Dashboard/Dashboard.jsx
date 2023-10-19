@@ -24,7 +24,6 @@ function Dashboard () {
             <div className={style.content2}>
                 <CantEvent/>
             </div>
-
             
             
             
