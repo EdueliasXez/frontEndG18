@@ -31,6 +31,7 @@ const Profile = ({ isAuthenticated, logout }) => {
           <h2 className={styles["profile-header"]}>Bienvenido, {userData.userName}!</h2>
           <div className={styles["profile-info"]}>
             <p><strong>Nombre de usuario:</strong> {userData.userName}</p>
+            <p><strong>ID</strong> {userData._id}</p>
             <p><strong>Nombre:</strong> {userData.firstName} {userData.lastName}</p>
             <p><strong>Fecha de nacimiento:</strong> {userData.birthdate}</p>
             <p><strong>Correo electrónico:</strong> {userData.email}</p>

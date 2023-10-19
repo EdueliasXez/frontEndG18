@@ -99,11 +99,32 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         filteredEvents: action.payload,
       };
+      
     case actionTypes.FILTER_EVENTS_BY_LOCATION:
       return {
         ...state,
         filteredEvents: action.payload,
       };
+      case actionTypes.GET_TICKETS_REQUEST:
+  return {
+    ...state,
+    loading: true,
+    error: null,
+  };
+case actionTypes.GET_TICKETS_SUCCESS:
+  return {
+    ...state,
+    tickets: action.payload, 
+    loading: false,
+    error: null,
+  };
+case actionTypes.GET_TICKETS_FAILURE:
+  return {
+    ...state,
+    tickets: [], 
+    loading: false,
+    error: action.payload,
+  };
     default:
       return state;
   }
