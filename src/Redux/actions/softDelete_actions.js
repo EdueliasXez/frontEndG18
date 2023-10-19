@@ -4,7 +4,7 @@ import axios from 'axios';
 export const handleActive = async (model, id, isActive) => {
     try {
 
-      await axios.put(`/softdelete/activate`, { model, id, activateValue: isActive });
+      await axios.put(`/soft-delete`, { model, id, activateValue: isActive });
 
       return { success: true };
     } catch (error) {
@@ -16,7 +16,7 @@ export const handleActive = async (model, id, isActive) => {
 
 export const handleActiveEvent = async (eventId, isActive) => {
     try {
-      await handleActive('event', eventId, isActive);
+      await handleActive('Event', eventId, isActive);
     } catch (error) {
       console.error('Error al cambiar el estado del evento:', error);
     }
@@ -32,7 +32,7 @@ export const handleActiveUser = async (userId, isActive) => {
 
 export const handleActiveReview = async (reviewId, isActive) => {
     try {
-      await handleActive('Reviews', reviewId, isActive);
+      await handleActive('Review', reviewId, isActive);
     } catch (error) {
       console.error('Error al cambiar el estado de la revisión:', error);
     }

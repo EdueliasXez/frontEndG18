@@ -17,9 +17,7 @@ import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsersAdmin";
 import WishlistEvents from "./Views/WishlistEvents/WishlistEvents";
 import CreateIsProvider from "./Views/CreateIsProvider/Create";
 import TicketsAdmin from "./Views/Admin/Dashboard/Cantidades/Tickets/CantTickets"
-
-
-
+import UserEdit from './Components/Profile/EditProfile/EditProfile'
 
 
 
@@ -45,6 +43,8 @@ function App() {
           <Route path="/admin/users" element={<UsuariosAdmin/>} />
           <Route path="/admin/Create" element={<CreateIsProvider/>} />
           <Route path="/admin/tickets" element={<TicketsAdmin/>} />
+          <Route path="/profile/:idUser" element={<ProfileViewer />} />
+          <Route path="/editUser/:userId" element={<UserEdit />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwt_decode from 'jwt-decode';
+import * as actionTypes from '../types/types';
 
 export const RENEW_TOKEN_REQUEST = 'RENEW_TOKEN_REQUEST';
 export const RENEW_TOKEN_SUCCESS = 'RENEW_TOKEN_SUCCESS';
@@ -110,4 +111,22 @@ export const setRefreshToken = (token) => {
       }
     });
   };
-  
+
+  export const getUserProfileFromId = (userId) => {
+    return (dispatch) => {
+      return axios
+        .get(`/user/${userId}`)
+        .then((response) => {
+          const userData = response.data;
+          dispatch({
+            type: actionTypes.SET_USER_PROFILE, 
+            payload: userData,
+          });
+          return userData;
+        })
+        .catch((error) => {
+          console.error("Error al obtener el usuario:", error);
+          throw error;
+        });
+    };
+  };
