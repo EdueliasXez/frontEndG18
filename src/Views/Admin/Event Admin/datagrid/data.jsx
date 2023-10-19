@@ -12,7 +12,7 @@ function DataEvents () {
     useEffect(()=>{
         const obtenerDatos = async () => {
             try {
-                const response = await axios.get('/event');
+                const response = await axios.get('/events');
                 setDatos(response.data);
               } catch (error) {
                 console.error('Error al obtener los datos:', error);
@@ -89,20 +89,19 @@ function DataEvents () {
           {elementosPaginaActual.map((dato) => (
             <tr key={dato.id}>
               <td>
-                <img className={styles.avatarimg} src={dato.imageSrc} alt={dato.name}/>
               </td>
               <td>
                   {editingEventId===dato.id ? (
                       <input
                         type="text"
-                        value={editedEvent.name}
+                        value={editedEvent.title}
                         onChange={(e) => setEditedEvent({
                             ...editedEvent,
-                            name: e.target.value,
+                            title: e.target.value,
                         })
                         }
                       />
-                ) : (<p className={styles.name}>{dato.name}</p>)}
+                ) : (<p className={styles.name}>{dato.title}</p>)}
               </td>
               <td>
                 {editingEventId===dato.id ? (
@@ -129,7 +128,7 @@ function DataEvents () {
             : (<span>{dato.stock}</span>)}
                 </td>
               <td>🌟 {dato.rating}</td>
-              <td>{dato.isActive===true?(<p>Activo</p>):(<p>Desactivado</p>)}</td>
+              
               <td>
                 {editingEventId === dato.id ? (
                 <button onClick={() => saveHandler(dato.id)} className={styles.buttonE}>Guardar</button>

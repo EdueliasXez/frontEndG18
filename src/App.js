@@ -15,7 +15,6 @@ import Dashboard from "./Views/Admin/Dashboard/Dashboard";
 import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
 import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsersAdmin";
 import WishlistEvents from "./Views/WishlistEvents/WishlistEvents";
-import CreateIsProvider from "./Views/CreateIsProvider/Create";
 import EventForm from "./Views/CreateIsProvider/Create"
 import TicketsAdmin from "./Views/Admin/Dashboard/Cantidades/Tickets/CantTickets"
 import ProfileViewer from './Components/Profile/ProfileViewer';
