@@ -229,7 +229,7 @@ export const updateEvent = (eventId, updatedEventData) => {
   return (dispatch) => {
     dispatch(updateEventRequest());
     axios
-      .put(`/events/${eventId}`, { event: updatedEventData }) // Envia los datos en un objeto "event"
+      .put(`/events/${eventId}`, { event: updatedEventData }) 
       .then((response) => {
         const updatedEvent = response.data;
         dispatch(updateEventSuccess(updatedEvent));

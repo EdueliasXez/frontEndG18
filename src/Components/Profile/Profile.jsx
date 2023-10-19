@@ -76,10 +76,15 @@ const Profile = ({ isAuthenticated, logout, getTicketsByUserId }) => {
   <Link to={`/editUser/${userData._id}`}>
     <button>Editar Usuario</button>
   </Link>
+  
 ) : (
   <p>Cargando datos del usuario...</p>
 )}
-
+{userData && userData.isServiceProvider && (
+  <Link to="/admin/servi">
+    <button className={styles["admin-button"]}>Administrar Servicios</button>
+  </Link>
+)}
         </div>
       )}
     </div>

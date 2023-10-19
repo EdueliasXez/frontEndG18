@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEvent } from '../../Redux/actions/events_actions';
 import { getCategories } from '../../Redux/actions/categories_actions';
+import { getUserProfileFromToken } from '../../Redux/actions/auth_actions'; 
 import axios from 'axios';
 import './Create.css';
 
@@ -15,8 +16,8 @@ function EventForm() {
     date: '',
     images: [],
     active: true,
-    serviceProviderId: '',
     categoryIds: [],
+    serviceProviderId: null, 
   });
 
   const [placeData, setPlaceData] = useState({
@@ -28,38 +29,55 @@ function EventForm() {
       date: '',
       time: '',
     },
-    serviceProviderId: '',
+    serviceProviderId: null, 
   });
 
   const [imageFiles, setImageFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const categoryState = useSelector((state) => state.categories);
+  const isAuthenticated = useSelector((state) => state.login.isAuthenticated); 
 
   useEffect(() => {
-    // Obtén las categorías al cargar el componente
     dispatch(getCategories());
+  
+    getUserProfileFromToken()
+      .then((userProfile) => {
+        const serviceProviderId = userProfile._id;
+        setEventData({
+          ...eventData,
+          serviceProviderId,
+        });
+        setPlaceData({
+          ...placeData,
+          serviceProviderId,
+        });
+      })
+      .catch((error) => {
+        console.error('Error al obtener el usuario:', error);
+      });
   }, [dispatch]);
-
+  
+  // Agrega este useEffect para actualizar las categorías cuando cambie categoryState.categories
   useEffect(() => {
-    // Actualiza las categorías cuando cambia el estado
     setCategories(categoryState.categories);
   }, [categoryState.categories]);
-
-  const handleEventChange = (e) => {
+  
+  
+  function handleEventChange(e) {
     const { name, value } = e.target;
     setEventData({
       ...eventData,
       [name]: value,
     });
-  };
+  }
 
-  const handlePlaceChange = (e) => {
+  function handlePlaceChange(e) {
     const { name, value } = e.target;
     setPlaceData({
       ...placeData,
       [name]: value,
     });
-  };
+  }
 
   function handleImageChange(e) {
     const files = e.target.files;
@@ -74,49 +92,48 @@ function EventForm() {
     setImageFiles(newImageFiles);
   }
 
-  const handleCategoryChange = (e) => {
-    // Obtén el valor del ID seleccionado y guárdalo en eventData
+  function handleCategoryChange(e) {
     const selectedCategory = e.target.value;
     setEventData({
       ...eventData,
       categoryIds: [selectedCategory],
     });
-  };
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post('/cloudinary/upload', imageFiles);
-
+  
       if (response.status === 200) {
         const imageData = response.data;
         const imageUrls = imageData.imageUrls;
-
+  
         const updatedEventData = {
           ...eventData,
           images: imageUrls,
-          date: eventData.date, // Agrega la fecha al evento
+          date: eventData.date,
         };
-
+  
         const updatedPlaceData = {
           ...placeData,
           dateAndTime: {
-            date: eventData.date, // Agrega la fecha al lugar
-            time: placeData.dateAndTime.time,
+            date: eventData.date, // Elimina la propiedad "time"
           },
         };
-
+  
         console.log({ event: updatedEventData, place: updatedPlaceData });
-
+  
         dispatch(createEvent({ event: updatedEventData, place: updatedPlaceData }));
       } else {
-        // Maneja el error aquí si es necesario
+        // Manejar el error si es necesario
       }
     } catch (error) {
       console.error(error);
     }
   }
+  
 
   return (
     <form onSubmit={handleSubmit}>
@@ -164,13 +181,7 @@ function EventForm() {
         onChange={handleImageChange}
         name="images"
       />
-      <label>ID del Proveedor de Servicios</label>
-      <input
-        type="text"
-        name="serviceProviderId"
-        value={eventData.serviceProviderId}
-        onChange={handleEventChange}
-      />
+    
       <label>Categorías del Evento</label>
       <select
         name="categoryIds"
@@ -210,26 +221,6 @@ function EventForm() {
         type="text"
         name="postalCode"
         value={placeData.postalCode}
-        onChange={handlePlaceChange}
-      />
-      <label>Fecha y Hora del Lugar</label>
-      <input
-        type="datetime-local"
-        name="dateAndTime"
-        value={placeData.dateAndTime.date}
-        onChange={handlePlaceChange}
-      />
-      <input
-        type="text"
-        name="dateAndTime"
-        value={placeData.dateAndTime.time}
-        onChange={handlePlaceChange}
-      />
-      <label>ID del Proveedor de Servicios del Lugar</label>
-      <input
-        type="text"
-        name="serviceProviderId"
-        value={placeData.serviceProviderId}
         onChange={handlePlaceChange}
       />
       <button type="submit">Crear Evento</button>

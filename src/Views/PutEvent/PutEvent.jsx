@@ -33,7 +33,7 @@ const EditEvent = () => {
     },
     date: "",
   });
-  const [isEventModified, setIsEventModified] = useState(false); // Estado para verificar si se ha modificado el evento
+  const [isEventModified, setIsEventModified] = useState(false);
 
   useEffect(() => {
     dispatch(cleanDetail());
@@ -48,22 +48,35 @@ const EditEvent = () => {
 
   const handleSave = () => {
     dispatch(updateEvent(id, updatedEvent));
-    setIsEventModified(true); // Evento modificado, muestra la alerta
+    setIsEventModified(true); 
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedEvent({
-      ...updatedEvent,
-      [name]: value,
-    });
+  
+    if (name.includes(".")) {
+      const [parentField, childField] = name.split(".");
+      setUpdatedEvent({
+        ...updatedEvent,
+        [parentField]: {
+          ...updatedEvent[parentField],
+          [childField]: value,
+        },
+      });
+    } else {
+
+      setUpdatedEvent({
+        ...updatedEvent,
+        [name]: value,
+      });
+    }
   };
+  
 
   useEffect(() => {
-    // Muestra una alerta si el evento ha sido modificado
     if (isEventModified) {
       alert("Evento modificado");
-      setIsEventModified(false); // Restablece el estado
+      setIsEventModified(false);
     }
   }, [isEventModified]);
   return (
@@ -80,8 +93,8 @@ const EditEvent = () => {
             value={updatedEvent.title}
             onChange={handleChange}
             multiline
-            rows={3} // Ajusta este valor según tu preferencia
-            maxRows={6} // Ajusta este valor según tu preferencia
+            rows={3} 
+            maxRows={6} 
           />
           <TextField
             label="Resumen"
@@ -89,8 +102,8 @@ const EditEvent = () => {
             value={updatedEvent.summary}
             onChange={handleChange}
             multiline
-            rows={5} // Ajusta este valor según tu preferencia
-            maxRows={10} // Ajusta este valor según tu preferencia
+            rows={5} 
+            maxRows={10} 
           />
           <TextField
             label="Precio"
@@ -108,25 +121,25 @@ const EditEvent = () => {
           />
           <TextField
   label="País"
-  name="placeId.country" // Acceder al campo 'country' dentro de placeId
+  name="placeId.country" 
   value={updatedEvent.placeId.country}
   onChange={handleChange}
 />
 <TextField
   label="Ciudad"
-  name="placeId.city" // Acceder al campo 'city' dentro de placeId
+  name="placeId.city" 
   value={updatedEvent.placeId.city}
   onChange={handleChange}
 />
 <TextField
   label="Dirección"
-  name="placeId.direction" // Acceder al campo 'direction' dentro de placeId
+  name="placeId.direction" 
   value={updatedEvent.placeId.direction}
   onChange={handleChange}
 />
 <TextField
   label="Código Postal"
-  name="placeId.postalCode" // Acceder al campo 'postalCode' dentro de placeId
+  name="placeId.postalCode"
   value={updatedEvent.placeId.postalCode}
   onChange={handleChange}
 />
