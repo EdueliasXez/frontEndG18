@@ -174,10 +174,14 @@ export const getTicketsRequest = () => ({
   type: actionTypes.GET_TICKETS_REQUEST, 
 });
 
-export const getTicketsSuccess = (tickets) => ({
-  type: actionTypes.GET_TICKETS_SUCCESS, 
-  payload: tickets,
-});
+export const getTicketsSuccess = (tickets) => {
+  console.log('Tickets en getTicketsSuccess:', tickets); 
+  return {
+    type: actionTypes.GET_TICKETS_SUCCESS,
+    payload: tickets,
+  };
+};
+
 
 export const getTicketsFailure = (error) => ({
   type: actionTypes.GET_TICKETS_FAILURE, 
@@ -187,17 +191,52 @@ export const getTicketsFailure = (error) => ({
 
 export const getTicketsByUserId = (userId) => {
   return (dispatch) => {
-    dispatch(getTicketsRequest()); 
-    axios
+    dispatch(getTicketsRequest());
+
+    return axios
       .get(`/user/tickets/${userId}`)
       .then((response) => {
         const tickets = response.data;
-        dispatch(getTicketsSuccess(tickets)); 
+        dispatch(getTicketsSuccess(tickets));
+        return tickets;
       })
       .catch((error) => {
         const errorMsg = error.message;
-        dispatch(getTicketsFailure(errorMsg)); 
+        dispatch(getTicketsFailure(errorMsg));
+        throw error; 
       });
   };
 };
 
+
+
+export const updateEventRequest = () => ({
+  type: actionTypes.UPDATE_EVENT_REQUEST,
+});
+
+export const updateEventSuccess = (updatedEvent) => ({
+  type: actionTypes.UPDATE_EVENT_SUCCESS,
+  payload: updatedEvent,
+});
+
+export const updateEventFailure = (error) => ({
+  type: actionTypes.UPDATE_EVENT_FAILURE,
+  payload: error,
+});
+
+
+export const updateEvent = (eventId, updatedEventData) => {
+  return (dispatch) => {
+    dispatch(updateEventRequest());
+    axios
+      .put(`/events/${eventId}`, { event: updatedEventData }) 
+      .then((response) => {
+        const updatedEvent = response.data;
+        dispatch(updateEventSuccess(updatedEvent));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(updateEventFailure(errorMsg));
+      });
+  };
+};

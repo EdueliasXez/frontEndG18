@@ -1,25 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import * as actionTypes from '../types/types'; 
 
 const initialState = {
-  user: null, // Almacena los detalles del usuario autenticado
-  isAuthenticated: false, // Indica si el usuario está autenticado
+  userProfile: null, 
 };
 
-const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
-      state.isAuthenticated = !!action.payload;
-    },
-    clearUser: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-    },
-  },
-});
+const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case actionTypes.SET_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: action.payload, 
+      };
+    default:
+      return state;
+  }
+};
 
-export const { setUser, clearUser } = authSlice.actions;
-
-export default authSlice.reducer;
+export default userReducer;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import './styles.css';
 import { connect } from 'react-redux';
 import { registerUser, registrationRequest, registrationSuccess, registrationFailure } from '../../Redux/actions/login_actions';
@@ -9,13 +10,13 @@ import { registerUser, registrationRequest, registrationSuccess, registrationFai
 function Formulario(props) {
   console.log(props);
   const {
-    dispatch, // Acceso a la función dispatch
+    dispatch,
     registered,
     registering,
   } = props;
 
-
-
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  
   const [formData, setFormData] = useState({
     userName: '',
     firstName: '',
@@ -26,8 +27,10 @@ function Formulario(props) {
     country: '',
     city: '',
     wantsNotification: false,
-    googleProfile: null,
     isServiceProvider: false,
+    images: [],
+    location: '',
+    summary: '',
   });
 
   const [errores, setErrores] = useState({
@@ -43,82 +46,42 @@ function Formulario(props) {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
+  const handleIsServiceProviderChange = (e) => {
+    setFormData({
+      ...formData,
+      isServiceProvider: e.target.checked,
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrores = { ...errores };
-    
-
-    if (formData.userName === '') {
-      newErrores.userName = '*Campo obligatorio';
-    } else {
-      newErrores.userName = '';
-    }
-
-    if (formData.firstName === '') {
-      newErrores.firstName = '*Campo obligatorio';
-    } else {
-      newErrores.firstName = '';
-    }
-
-    if (formData.lastName === '') {
-      newErrores.lastName = '*Campo obligatorio';
-    } else {
-      newErrores.lastName = '';
-    }
-
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(formData.email)) {
-      newErrores.email = 'Correo electrónico inválido';
-    } else {
-      newErrores.email = '';
-    }
-
-    if (formData.password === '') {
-      newErrores.password = '*Campo obligatorio';
-    } else if (formData.password.length < 6) {
-      newErrores.password = 'La contraseña debe tener al menos 6 caracteres';
-    } else {
-      newErrores.password = '';
-    }
-
-    if (formData.country === '') {
-      newErrores.country = '*Campo obligatorio';
-    } else {
-      newErrores.country = '';
-    }
-
-    if (formData.city === '') {
-      newErrores.city = '*Campo obligatorio';
-    } else {
-      newErrores.city = '';
-    }
 
     setErrores(newErrores);
 
     if (!Object.values(newErrores).some((error) => error !== '' && error !== false)) {
-      dispatch(registrationRequest()); // 2. Dispatch la acción de inicio de registro
-
-      // Llama a la acción de registro de usuario pasando formData
+      dispatch(registrationRequest());
       dispatch(registerUser(formData))
         .then(() => {
-          dispatch(registrationSuccess()); // 3. Dispatch la acción de registro exitoso
+          dispatch(registrationSuccess());
           console.log('Registro exitoso');
+          setRegistrationSuccess(true);
         })
         .catch((error) => {
-          dispatch(registrationFailure(error)); // 4. Dispatch la acción de registro fallido
+          dispatch(registrationFailure(error));
           console.error('Error en el registro:', error);
-          alert('error no se pudo registrar el usuario');
+          alert('Error: no se pudo registrar el usuario');
         });
     } else {
       console.log('error', newErrores);
     }
-  };
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -213,10 +176,35 @@ function Formulario(props) {
           type="checkbox"
           name="isServiceProvider"
           checked={formData.isServiceProvider}
-          onChange={(e) => setFormData({ ...formData, isServiceProvider: e.target.checked })}
+          onChange={handleIsServiceProviderChange}
         />
         Soy un proveedor de servicios
       </label>
+
+      {formData.isServiceProvider && (
+        <div>
+          <label>
+            <input
+              className="input"
+              type="text"
+              placeholder="Ubicación del servicio"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            <input
+              className="input"
+              type="text"
+              placeholder="Resumen del servicio"
+              name="summary"
+              value={formData.summary}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+      )}
 
       <label>
         <input
@@ -242,7 +230,7 @@ function Formulario(props) {
       </label>
       
       {registering && <p>Cargando...</p>}
-      {registered && <p>El usuario se a creado con exito</p>}
+      {registered && <p>El usuario se ha creado con éxito <Link to="/login">Ir a iniciar sesión</Link></p>}
       <button className="submit" type="submit">
         Registrarse
       </button>
@@ -250,15 +238,15 @@ function Formulario(props) {
         ¿Ya tienes una cuenta? <a href="#">Iniciar sesión</a>
       </p>
     </form>
-  );  
-  
+  );
 }
+
 const mapStateToProps = (state) => {
   return {
-    // Mapea las partes del estado que necesitas
     registering: state.login.registering,
     registered: state.login.registered,
     error: state.login.error,
   };
 }
+
 export default connect(mapStateToProps)(Formulario);

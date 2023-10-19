@@ -11,7 +11,10 @@ const initialState = {
     countries: [],
     cities: [],
   },
+  tickets: [], 
+  
 };
+
 
 const eventReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -49,6 +52,11 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         filteredEvents: action.payload,
       };
+      case actionTypes.GET_SERVICEPROVIDER:
+        return {
+          ...state,
+          filteredEvents: action.payload,
+        };
     case actionTypes.FILTER_EVENTS:
       return {
         ...state,

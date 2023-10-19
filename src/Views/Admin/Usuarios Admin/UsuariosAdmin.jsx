@@ -1,5 +1,4 @@
 import Datagrid from "./datagrid/datagrid"
-
 import style from "./UsuariosAdmin.module.css"
 
 function UsuariosAdmin () {
@@ -12,6 +11,7 @@ function UsuariosAdmin () {
             <div className={style.table}>
                 <Datagrid/>
             </div>
+           
         </div>
     )
 }

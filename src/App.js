@@ -15,8 +15,14 @@ import Dashboard from "./Views/Admin/Dashboard/Dashboard";
 import EventAdmin from "./Views/Admin/Event Admin/EventAdmin";
 import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsuariosAdmin";
 import EventForm from "./Views/CreateIsProvider/create"
+import UsuariosAdmin from "./Views/Admin/Usuarios Admin/UsersAdmin";
 import WishlistEvents from "./Views/WishlistEvents/WishlistEvents";
+import CreateIsProvider from "./Views/CreateIsProvider/create";
+import TicketsAdmin from "./Views/Admin/Dashboard/Cantidades/Tickets/CantTickets"
+import UserEdit from './Components/Profile/EditProfile/EditProfile'
 
+import ServiceProfile from './Views/ServiceProvider/Service';
+import EventDet from './Views/PutEvent/PutEvent';
 
 
 function App() {
@@ -35,11 +41,16 @@ function App() {
           <Route path="/checkout/success" element={<SucessPage/>} />
           <Route path="/checkout/cancel" element={<CancelPage />} />
           <Route path="/QRCodeGenerator" element={<QRCodeGenerator/>} />
+          <Route path="/WishlistEvents" element={<WishlistEvents/>} />
           <Route path="/admin" element={<Dashboard/>} />
           <Route path="/admin/events" element={<EventAdmin/>} />
           <Route path="/admin/users" element={<UsuariosAdmin/>} />
-          <Route path="/profile/createEvent" element={<EventForm/>} />
-          <Route path="/WishlistEvents" element={<WishlistEvents/>} />
+          <Route path="/admin/Create" element={<CreateIsProvider/>} />
+          <Route path="/admin/tickets" element={<TicketsAdmin/>} />
+          <Route path="/profile/:idUser" element={<ProfileViewer />} />
+          <Route path="/editUser/:userId" element={<UserEdit />} />
+          <Route path="/admin/servi" element={<ServiceProfile/>}/>
+          <Route path ="/put/:id" element={<EventDet/>}/>
         </Routes>
       </BrowserRouter>
     </div>

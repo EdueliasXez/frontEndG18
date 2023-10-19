@@ -2,13 +2,10 @@ import { Link } from "react-router-dom"
 import {useEffect, useState} from "react"
 import axios from "axios"
 import { LineChart, Line, ResponsiveContainer, Tooltip } from 'recharts';
-import style from './CantUsuarios.module.css'
-
-
+import style from './CantUsers.module.css'
 const CantUsers = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [data, setData] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,10 +16,8 @@ const CantUsers = () => {
         console.log(error);
       }
     };
-
     fetchData();
   }, []);
-
   return (
     <div className={style.users}>
       <div className={style.info}>
@@ -54,5 +49,4 @@ const CantUsers = () => {
     </div>
   );
 };
-
 export default CantUsers;
