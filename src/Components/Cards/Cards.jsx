@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import EventCard from '../Card/Card';
+import CustomCard from '../Card/Card';
 import styles from './Cards.module.css';
 import { getEvents } from '../../Redux/actions/events_actions';
 import LocationFilter from '../SideBar/Filters/LocationFilter'
 import { useDispatch, useSelector } from 'react-redux';
+
 
 function Cards() {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ function Cards() {
         ) : noEvents ? ( // Mostrar aviso cuando no hay eventos
           <div>No hay eventos con estas especificaciones.</div>
         ) : eventsToShow.map((event, index) => (
-          <EventCard key={index} event={event} />
+          <CustomCard key={index} event={event} />
         ))}
       </div>
       <div className={styles.contPag}>
