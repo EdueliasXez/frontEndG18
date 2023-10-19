@@ -36,3 +36,8 @@
     background-color: rgb(0, 0, 0);
 
 }
+.scrollableContent {
+    overflow-y: auto;
+    max-height: 400px; /* Ajusta la altura máxima deseada */
+  }
+  
