@@ -73,18 +73,22 @@ const Profile = ({ isAuthenticated, logout, getTicketsByUserId }) => {
             <button className={styles["home-button"]}>Volver al Inicio</button>
           </Link>
           {userData ? (
-  <Link to={`/editUser/${userData._id}`}>
-    <button>Editar Usuario</button>
-  </Link>
-  
-) : (
-  <p>Cargando datos del usuario...</p>
-)}
-{userData && userData.isServiceProvider && (
-  <Link to="/admin/servi">
-    <button className={styles["admin-button"]}>Administrar Servicios</button>
-  </Link>
-)}
+            <Link to={`/editUser/${userData._id}`}>
+              <button>Editar Usuario</button>
+            </Link>
+          ) : (
+            <p>Cargando datos del usuario...</p>
+          )}
+          {userData && userData.isServiceProvider && (
+            <Link to="/admin/servi">
+              <button className={styles["admin-button"]}>Administrar Servicios</button>
+            </Link>
+          )}
+          {userData && userData.isServiceProvider && (
+            <Link to="/profile/createEvent">
+              <button className={styles["create-event-button"]}>Crear Evento</button>
+            </Link>
+          )}
         </div>
       )}
     </div>
